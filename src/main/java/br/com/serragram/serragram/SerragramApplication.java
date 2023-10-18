@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SerragramApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SerragramApplication.class, args);
+	 SpringApplication.run(SerragramApplication.class, args);
+	  
 	}
 
 }
