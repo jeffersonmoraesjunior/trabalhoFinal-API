@@ -1,4 +1,4 @@
-package service;
+package br.com.serragram.serragram.service;
 
 import org.springframework.stereotype.Service;
 

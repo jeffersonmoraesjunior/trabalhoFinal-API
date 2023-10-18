@@ -1,4 +1,4 @@
-package controller;
+package br.com.serragram.serragram.controller;
 
 import java.util.List;
 
@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import DTO.UserDTO;
-import service.UserService;
+import br.com.serragram.serragram.DTO.UserDTO;
+import br.com.serragram.serragram.service.UserService;
+
 
 @RestController
 @RequestMapping("/users")

@@ -1,4 +1,4 @@
-package security;
+package br.com.serragram.serragram.security;
 
 import java.util.Collection;
 

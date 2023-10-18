@@ -1,8 +1,10 @@
-package DTO;
+package br.com.serragram.serragram.DTO;
 
 import java.util.Date;
 
-import model.User;
+import br.com.serragram.serragram.model.User;
+
+
 
 public class UserDTO {
 	
