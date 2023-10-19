@@ -51,11 +51,11 @@ public class User {
 	@JsonManagedReference
 	private List<Post> posts;
 
-	@OneToMany(mappedBy = "seguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "id.userSeguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<Relationship> seguidores;
 	
-	@OneToMany(mappedBy = "seguido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "id.userSeguido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<Relationship> seguindo;
 

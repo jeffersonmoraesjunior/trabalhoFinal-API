@@ -7,5 +7,5 @@ import br.com.serragram.serragram.model.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-	Post findbyPost(Long id);
+	
 }
