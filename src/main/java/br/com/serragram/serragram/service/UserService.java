@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
+import br.com.serragram.serragram.exceptions.UserException;
 import br.com.serragram.serragram.model.User;
-import br.com.serragram.serragram.repository.RelationshipRepository;
 import br.com.serragram.serragram.repository.UserRepository;
 
 @Service
@@ -23,7 +23,12 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	/*
+	@Autowired
 	private RelationshipRepository relationshipRepository;
+	*/
 	
 	// GetAll
 	public List<UserDTO> findAll() {
@@ -46,20 +51,22 @@ public class UserService {
 	
 	// Post
 	@Transactional
-	public UserDTO inserir (UserInserirDTO userInserirDTO) {
+	public UserDTO inserir (UserInserirDTO userInserirDTO) throws UserException {
 		if (!userInserirDTO.getSenha().equalsIgnoreCase(userInserirDTO.getConfirmaSenha())) {
-			return null;
+			 throw new UserException("Senha e confirma senha devem ser idênticas.");
 		}
 		
 		User userEmailExistente = userRepository.findByEmail(userInserirDTO.getEmail());
 		if (userEmailExistente != null) {
-			return null;
+			throw new UserException("E-mail já cadastrado.");
 		}
 		
 		User user = new User();
 		user.setNome(userInserirDTO.getNome());
+		user.setSobreNome(userInserirDTO.getSobreNome());
 		user.setEmail(userInserirDTO.getEmail());
-		//user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
+		user.setDataNascimento(userInserirDTO.getDataNascimento());
+		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
 		
 		user = userRepository.save(user);
 		UserDTO userDTO = new UserDTO(user);
@@ -67,10 +74,10 @@ public class UserService {
 	}
 	
 	// Put
-	public UserDTO atualizar(User user, Long id) {
+	public UserDTO atualizar(User user, Long id) throws UserException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			return null;
+			 throw new UserException("Não existe este id.");
 		}
 		user.setId(id);
 		userRepository.save(user);
@@ -79,10 +86,10 @@ public class UserService {
 	}
 	
 	// Delete
-	public void remover(Long id) {
+	public void remover(Long id) throws UserException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			 
+			 throw new UserException("Não existe este id."); // lançando exceção default
 		}
 		userRepository.deleteById(id);
 	}
