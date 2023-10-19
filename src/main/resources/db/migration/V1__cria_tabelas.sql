@@ -17,7 +17,7 @@ CREATE TABLE post (
 
 CREATE TABLE comment (
 	id_comentario SERIAL PRIMARY KEY,
-	text TEXT NOT NULL,
+	texto TEXT NOT NULL,
 	data_criacao DATE,
 	post_id INTEGER,
 	FOREIGN KEY (post_id) REFERENCES post (id_post)
@@ -26,6 +26,6 @@ CREATE TABLE comment (
 CREATE TABLE relationship (
 	id_user_seguidor INTEGER REFERENCES usuario (id_user),
 	id_user_seguido INTEGER REFERENCES usuario (id_user),
-	data_criacao DATE,
+	data_inicio_seguimento DATE,
 	CONSTRAINT id_relarionship PRIMARY KEY (id_user_seguidor, id_user_seguido)
 );

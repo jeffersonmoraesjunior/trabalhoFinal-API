@@ -17,7 +17,7 @@ public class Comment {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_post")
+	@Column(name = "id_comentario")
 	private Long id;
 
 	@NotBlank(message = "insira um texto:")

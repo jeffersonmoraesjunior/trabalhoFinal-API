@@ -34,7 +34,6 @@ public class UserController {
 	
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> listar() {
-		UserDetails detail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(userService.findAll());
 	}
 	
@@ -60,6 +59,7 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody User user, @PathVariable Long id) {
+		System.out.println("Entrou aqui");
 		UserDTO userDTO = userService.atualizar(user, id);
 		if (userDTO == null) {
 			return ResponseEntity.notFound().build();

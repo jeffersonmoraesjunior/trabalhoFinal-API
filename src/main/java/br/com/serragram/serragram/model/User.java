@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -31,21 +33,23 @@ public class User {
 	private String nome;
 
 	@NotBlank(message = "Preencha o Sobrenome")
-	@Column(length = 60, nullable = false)
+	@Column(name = "sobre_nome", length = 60, nullable = false)
 	private String sobreNome;
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "data_nascimento", nullable = false)
+	private Date dataNascimento;
+	
 	@NotBlank(message = "Preencha o Email")
 	@Email(message = "Preencha o Email Válido")
 	@Column(length = 60, nullable = false)
-	private String email;
+	private String email;	
+	
 
 	@NotBlank(message = "Preencha a Senha")
 	@Column(length = 60, nullable = false)
 	private String senha;
 
-	@NotBlank(message = "Preencha a data de Nascimento")
-	@Column(length = 60, nullable = false)
-	private Date dataNascimento;
 
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonManagedReference
