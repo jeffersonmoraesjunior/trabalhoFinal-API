@@ -1,6 +1,7 @@
 package br.com.serragram.serragram.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,7 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Post {
@@ -17,21 +24,22 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_post")
 	private Long id;
-	
+
 	@NotBlank(message = "insira um conteudo:")
 	@Column
 	private String conteudo;
-	
+
 	@Column(name = "data_criacao")
 	private Date dataCriaçao;
 
-	public Post() {}
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@JsonBackReference
+	private User autor;
 	
-	public Post(Long id, @NotBlank(message = "insira um conteudo:") String conteudo, Date dataCriaçao) {
-		this.id = id;
-		this.conteudo = conteudo;
-		this.dataCriaçao = dataCriaçao;
-	}
+	@OneToMany(mappedBy = "post")
+	@JsonManagedReference
+	private List<Comment> comentarios;
 
 	public Long getId() {
 		return id;
@@ -56,6 +64,24 @@ public class Post {
 	public void setDataCriaçao(Date dataCriaçao) {
 		this.dataCriaçao = dataCriaçao;
 	}
+	
+	
+
+	public User getAutor() {
+		return autor;
+	}
+
+	public void setAutor(User autor) {
+		this.autor = autor;
+	}
+
+	public List<Comment> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comment> comentarios) {
+		this.comentarios = comentarios;
+	}
 
 	@Override
 	public int hashCode() {
@@ -73,5 +99,5 @@ public class Post {
 		Post other = (Post) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

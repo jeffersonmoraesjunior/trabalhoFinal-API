@@ -1,5 +1,6 @@
 package br.com.serragram.serragram.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Embeddable;
@@ -7,8 +8,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class RelationshipPK {
+public class RelationshipPK implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@ManyToOne
 	@JoinColumn(name = "id_user_seguidor")
 	private User userSeguidor;

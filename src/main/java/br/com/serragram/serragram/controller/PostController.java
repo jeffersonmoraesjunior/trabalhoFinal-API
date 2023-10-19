@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.PostDTO;
-import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.service.PostService;
 
@@ -33,7 +32,7 @@ public class PostController {
 	
 	@GetMapping
 	public ResponseEntity<List<PostDTO>> listar(){
-		UserDetails detail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//UserDetails detail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(postService.findAll());
 	}
 	
@@ -47,8 +46,8 @@ public class PostController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<PostDTO> inserir(@Valid @RequestBody PostInserirDTO postInserirDTO) {
-		PostDTO postDTO = postService.inserir(postInserirDTO);
+	public ResponseEntity<PostDTO> inserir(@Valid @RequestBody PostDTO postDTO) {
+		PostDTO post = postService.inserir(postDTO);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")

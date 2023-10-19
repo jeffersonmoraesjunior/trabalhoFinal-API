@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.PostDTO;
-import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.exceptions.PostException;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.repository.PostRepository;
@@ -40,18 +39,18 @@ public class PostService {
 
 	//Post
 	@Transactional
-	public PostDTO inserir(PostInserirDTO postInserirDTO) throws PostException {
-		if(postInserirDTO.getConteudo().isEmpty()) {
+	public PostDTO inserir(PostDTO postDTO) throws PostException {
+		if(postDTO.getConteudo().isEmpty()) {
 			throw new PostException("Insira um conteúdo.");
 		}
 		
 		Post post = new Post();
-		post.setConteudo(postInserirDTO.getConteudo());
-		post.setDataCriaçao(postInserirDTO.getDataCriacao());
+		post.setConteudo(postDTO.getConteudo());
+		post.setDataCriaçao(postDTO.getDataCricao());
 		
 		post = postRepository.save(post);
-		PostDTO postDTO = new PostDTO (post);
-		return postDTO;
+		PostDTO postDTO2 = new PostDTO (post);
+		return postDTO2;
 	}
 	
 	//Put
