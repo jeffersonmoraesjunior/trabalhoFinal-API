@@ -74,12 +74,18 @@ public class UserService {
 	}
 	
 	// Put
-	public UserDTO atualizar(User user, Long id) throws UserException {
+	public UserDTO atualizar(UserInserirDTO userInserirDTO, Long id) throws UserException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
 			 throw new UserException("Não existe este id.");
 		}
+		User user = userOpt.get();
 		user.setId(id);
+		user.setNome(userInserirDTO.getNome());
+		user.setSobreNome(userInserirDTO.getSobreNome());
+		user.setDataNascimento(userInserirDTO.getDataNascimento());
+		user.setEmail(userInserirDTO.getEmail());
+		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
 		userRepository.save(user);
 		UserDTO userDTO = new UserDTO(user);
 		return userDTO;

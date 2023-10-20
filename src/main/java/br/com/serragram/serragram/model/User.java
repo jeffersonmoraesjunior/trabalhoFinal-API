@@ -67,13 +67,13 @@ public class User {
 
 	}
 
-	public User(Long id, String nome, String sobreNome, String email, String senha, Date dataNascimento) {
+	public User(Long id, String nome, String sobreNome,  Date dataNascimento, String email, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.sobreNome = sobreNome;
+		this.dataNascimento = dataNascimento;
 		this.email = email;
 		this.senha = senha;
-		this.dataNascimento = dataNascimento;
 	}
 
 	public Long getId() {
@@ -99,6 +99,14 @@ public class User {
 	public void setSobreNome(String sobreNome) {
 		this.sobreNome = sobreNome;
 	}
+	
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
 	public String getEmail() {
 		return email;
@@ -114,14 +122,6 @@ public class User {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
 	}
 
 	public List<Post> getPosts() {

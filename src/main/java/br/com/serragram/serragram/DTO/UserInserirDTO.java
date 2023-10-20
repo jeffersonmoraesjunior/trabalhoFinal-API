@@ -2,6 +2,7 @@ package br.com.serragram.serragram.DTO;
 
 import java.util.Date;
 
+
 public class UserInserirDTO {
 
 	private String nome;
@@ -10,7 +11,6 @@ public class UserInserirDTO {
 	private String email;
 	private String senha;
 	private String confirmaSenha;
-	
 	
 	public String getNome() {
 		return nome;

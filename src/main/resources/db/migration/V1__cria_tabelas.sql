@@ -2,9 +2,9 @@ CREATE TABLE usuario (
 	id_user SERIAL PRIMARY KEY,
 	nome VARCHAR(60) NOT NULL,
     sobre_nome VARCHAR(60) NOT NULL,
+    data_nascimento DATE NOT NULL,
     email VARCHAR(60) NOT NULL,
-    senha VARCHAR(60) NOT NULL,
-    data_nascimento DATE NOT NULL
+    senha VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE post (

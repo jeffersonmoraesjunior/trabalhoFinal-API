@@ -7,8 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
-import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.service.UserService;
 
 
@@ -57,10 +54,9 @@ public class UserController {
 		return ResponseEntity.created(uri).body(userDTO);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody User user, @PathVariable Long id) {
-		System.out.println("Entrou aqui");
-		UserDTO userDTO = userService.atualizar(user, id);
+	@PutMapping("/all/{id}")
+	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserInserirDTO userInserirDTO, @PathVariable Long id) {
+		UserDTO userDTO = userService.atualizar(userInserirDTO, id);
 		if (userDTO == null) {
 			return ResponseEntity.notFound().build();
 		}
