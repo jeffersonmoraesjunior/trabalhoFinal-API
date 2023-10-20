@@ -19,6 +19,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
+<<<<<<< Updated upstream
+=======
+import br.com.serragram.serragram.exceptions.UserException;
+import br.com.serragram.serragram.model.User;
+>>>>>>> Stashed changes
 import br.com.serragram.serragram.service.UserService;
 
 
@@ -54,13 +59,22 @@ public class UserController {
 		return ResponseEntity.created(uri).body(userDTO);
 	}
 
+<<<<<<< Updated upstream
 	@PutMapping("/all/{id}")
 	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserInserirDTO userInserirDTO, @PathVariable Long id) {
 		UserDTO userDTO = userService.atualizar(userInserirDTO, id);
 		if (userDTO == null) {
 			return ResponseEntity.notFound().build();
+=======
+	@PutMapping("/{id}")
+	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) {
+		try {
+			UserDTO updateUser = userService.atualizar(userDTO, id);
+			return ResponseEntity.ok(updateUser);
+		} catch (UserException e) {
+			throw new UserException("Erro ao atualizar o user{id}");
+>>>>>>> Stashed changes
 		}
-		return ResponseEntity.ok(userDTO);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import br.com.serragram.serragram.DTO.UserInserirDTO;
 import br.com.serragram.serragram.exceptions.UserException;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.UserRepository;
+import br.com.serragram.serragram.utils.Util;
 
 @Service
 public class UserService {
@@ -74,21 +76,29 @@ public class UserService {
 	}
 	
 	// Put
+<<<<<<< Updated upstream
 	public UserDTO atualizar(UserInserirDTO userInserirDTO, Long id) throws UserException {
+=======
+	public UserDTO atualizar(UserDTO userDTO, Long id) throws UserException {
+>>>>>>> Stashed changes
 		Optional<User> userOpt = userRepository.findById(id);
-		if (userOpt.isEmpty()) {
-			 throw new UserException("Não existe este id.");
+		if(userOpt.isEmpty()) {
+			throw new UserException("Id não existente");
 		}
 		User user = userOpt.get();
 		user.setId(id);
+<<<<<<< Updated upstream
 		user.setNome(userInserirDTO.getNome());
 		user.setSobreNome(userInserirDTO.getSobreNome());
 		user.setDataNascimento(userInserirDTO.getDataNascimento());
 		user.setEmail(userInserirDTO.getEmail());
 		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
+=======
+		//ele faz a copia dos atributos nulos de userDTO para user
+		Util.copyNonNullProperties(userDTO, user);
+>>>>>>> Stashed changes
 		userRepository.save(user);
-		UserDTO userDTO = new UserDTO(user);
-		return userDTO;
+		return new UserDTO(user);	
 	}
 	
 	// Delete
