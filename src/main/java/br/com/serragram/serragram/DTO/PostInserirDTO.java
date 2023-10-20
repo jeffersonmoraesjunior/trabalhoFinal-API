@@ -1,15 +1,13 @@
 package br.com.serragram.serragram.DTO;
 
-import br.com.serragram.serragram.model.User;
-
 public class PostInserirDTO {
 
 	private String conteudo;
-	private User autor;
+	private Long autorId;
 	
-	public PostInserirDTO(String conteudo, User autor) {
+	public PostInserirDTO(String conteudo, Long autorId) {
 		this.conteudo = conteudo;
-		this.autor = autor;
+		this.autorId = autorId;
 	}
 
 	public String getConteudo() {
@@ -20,13 +18,12 @@ public class PostInserirDTO {
 		this.conteudo = conteudo;
 	}
 
-	public User getAutor() {
-		return autor;
+	public Long getAutorId() {
+		return autorId;
 	}
 
-	public void setAutor(User autor) {
-		this.autor = autor;
+	public void setAutorId(Long autorId) {
+		this.autorId = autorId;
 	}
-
 	
 }

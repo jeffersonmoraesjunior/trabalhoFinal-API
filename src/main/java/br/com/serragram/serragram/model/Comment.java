@@ -38,6 +38,11 @@ public class Comment {
 	@JoinColumn(name = "post_id")
 	@JsonBackReference
 	private Post post;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	@JsonBackReference
+	private User autorComentario;
 
 	public Comment() {
 	}
@@ -73,14 +78,19 @@ public class Comment {
 	public void setPost(Post post) {
 		this.post = post;
 	}
-	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	
+		
+	public User getAutorComentario() {
+		return autorComentario;
+	}
+
+	public void setAutorComentario(User autorComentario) {
+		this.autorComentario = autorComentario;
+	}
 
 	@Override
 	public String toString() {
 		return "Comentário: " + texto
-				+"Data Criaçao: " + sdf.format(dataCriaçao)
+				+"Data Criaçao: " + dataCriaçao
 				+"Post: " + post;
 	}
 

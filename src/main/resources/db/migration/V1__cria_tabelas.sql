@@ -4,7 +4,7 @@ CREATE TABLE usuario (
     sobre_nome VARCHAR(60) NOT NULL,
     data_nascimento DATE NOT NULL,
     email VARCHAR(60) NOT NULL,
-    senha VARCHAR(60) NOT NULL
+    senha VARCHAR(60) NOT NULL 
 );
 
 CREATE TABLE post (
@@ -20,7 +20,9 @@ CREATE TABLE comment (
 	texto TEXT NOT NULL,
 	data_criacao  TIMESTAMP NOT NULL,
 	post_id INTEGER,
-	FOREIGN KEY (post_id) REFERENCES post (id_post)
+	user_id INTEGER,
+	FOREIGN KEY (post_id) REFERENCES post (id_post),
+	FOREIGN KEY (user_id) REFERENCES usuario (id_user)
 );
 
 CREATE TABLE relationship (

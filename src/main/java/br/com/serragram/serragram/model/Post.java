@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -91,11 +92,11 @@ public class Post {
 		this.comentarios = comentarios;
 	}
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 	@Override
 	public String toString() {
 		return "Post: " + conteudo 
-				+"Data Criaçao: " + sdf.format(dataCriacao)
+				+"Data Criaçao: " + dataCriacao
 				+"Autor: " + autor;
 	}
 

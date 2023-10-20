@@ -3,10 +3,9 @@ package br.com.serragram.serragram.DTO;
 import java.util.Date;
 import java.util.List;
 
+import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
-
-
 
 public class UserDTO {
 	
@@ -25,7 +24,7 @@ public class UserDTO {
 		this.sobreNome = user.getSobreNome();
 		this.email = user.getEmail();
 		this.dataNascimento = user.getDataNascimento();
-//		this.posts = user.getPosts();
+		this.posts = user.getPosts();
 	}
 	
 	public Long getId() {

@@ -1,12 +1,12 @@
 package br.com.serragram.serragram.DTO;
 
-import br.com.serragram.serragram.model.Post;
-
 public class CommentInserirDTO {
 
 	private String texto;
 	
-	private Post post;
+	private Long postId;
+	
+	private Long autorId;
 
 	public String getTexto() {
 		return texto;
@@ -16,13 +16,20 @@ public class CommentInserirDTO {
 		this.texto = texto;
 	}
 
-	public Post getPost() {
-		return post;
+	public Long getPostId() {
+		return postId;
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public void setPostId(Long postId) {
+		this.postId = postId;
 	}
-	
+
+	public Long getAutorId() {
+		return autorId;
+	}
+
+	public void setAutorId(Long autorId) {
+		this.autorId = autorId;
+	}
 	
 }

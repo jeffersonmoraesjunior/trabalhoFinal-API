@@ -1,5 +1,4 @@
 package br.com.serragram.serragram.service;
-
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -58,26 +57,20 @@ public class PostService {
 		
 		Post post = new Post();
 		post.setConteudo(postInserirDTO.getConteudo());
-		post.setDataCriacao(Calendar.getInstance());
-		Integer cont = 0;
-		for (User user : userRepository.findAll()) {
-			if(user.getId() == postInserirDTO.getAutor().getId()) {
-				post.setAutor(postInserirDTO.getAutor());
-				cont++;
-				break;
-			}
+		post.setDataCriacao(Calendar.getInstance());		
+		
+		Optional<User> userOpt = userRepository.findById(postInserirDTO.getAutorId());
+		if(userOpt.isEmpty()) {
+			throw new PostException("Autor não encontrado."); 
 		}
-		if (cont == 0) {
-			throw new PostException("Autor não encontrado.");
-		}
-		else
-		{
+		
+		post.setAutor(userOpt.get());
 		post = postRepository.save(post);
-		User user = new User();
-		mailConfig.sendEmail(user.getEmail(), "Você fez um Novo Post...", user.toString());
 		PostDTO postDTO = new PostDTO(post);
+		String email = userOpt.get().getEmail();
+		mailConfig.sendEmail(email, "Você fez um Novo Post...", post.toString());
 		return postDTO;
-		}
+		
 	}
 	
 	//Put

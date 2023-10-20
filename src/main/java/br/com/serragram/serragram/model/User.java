@@ -1,6 +1,5 @@
 package br.com.serragram.serragram.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -132,13 +131,20 @@ public class User {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
+//	public List<Comment> getComments() {
+//		return comments;
+//	}
+//
+//	public void setComments(List<Comment> comments) {
+//		this.comments = comments;
+//	}
+
+//	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	@Override
 	public String toString() {
 		return "Nome: " + nome + " " + sobreNome
-				+ "\nData de Nascimento: " + sdf.format(dataNascimento)
+				+ "\nData de Nascimento: " + dataNascimento
 				+ "\nEmail: " + email;
 	}
 

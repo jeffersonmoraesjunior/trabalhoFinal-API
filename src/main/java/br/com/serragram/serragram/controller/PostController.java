@@ -19,7 +19,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
-import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.service.PostService;
 
 @RestController
@@ -45,7 +44,7 @@ public class PostController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<PostDTO> inserir(@Valid @RequestBody PostInserirDTO postInserirDTO) {
+	public ResponseEntity<PostDTO> inserir( @Valid @RequestBody PostInserirDTO postInserirDTO) {
 		PostDTO postDTO = postService.inserir(postInserirDTO);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
