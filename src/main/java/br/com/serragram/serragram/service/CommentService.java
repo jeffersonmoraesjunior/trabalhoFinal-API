@@ -1,5 +1,6 @@
 package br.com.serragram.serragram.service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +9,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.serragram.serragram.DTO.CommentDTO;
+import br.com.serragram.serragram.DTO.CommentInserirDTO;
+import br.com.serragram.serragram.DTO.PostDTO;
+import br.com.serragram.serragram.exceptions.PostException;
 import br.com.serragram.serragram.model.Comment;
+import br.com.serragram.serragram.model.Post;
+import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.CommentRepository;
+import br.com.serragram.serragram.repository.PostRepository;
 
 @Service
 public class CommentService {
@@ -17,24 +25,45 @@ public class CommentService {
 	@Autowired
 	private CommentRepository commentRepository;
 	
+	@Autowired
+	private PostRepository postRepository;
+	
 	public List <Comment>findAll(){
 		List<Comment> comments =  commentRepository.findAll();
 		return comments;
 	}
 	
-	public Comment findById(Long id) {
+	public CommentDTO findById(Long id) {
 		Optional<Comment>  comment =  commentRepository.findById(id);
 		if (comment.isEmpty()) {
 			return null;
 		}
 		
-		return comment.get();	
+		return new CommentDTO(comment.get());	
 	}
 	
 	@Transactional
-	public Comment inserir (Comment comment) {
+	public CommentDTO inserir (CommentInserirDTO commentInserirDTO) {
+		Comment comment = new Comment();
+		comment.setTexto(commentInserirDTO.getTexto());
+		comment.setDataCriaçao(Calendar.getInstance());
+		Integer cont = 0;
+		for (Post post : postRepository.findAll()) {
+			if(post.getId() == commentInserirDTO.getPost().getId()) {
+				comment.setPost(post);;
+				cont++;
+				break;
+			}
+		}
+		if (cont == 0) {
+			throw new PostException("Post não encontrado.");
+		}
+		else
+		{
 		comment = commentRepository.save(comment);
-		return comment;
+		CommentDTO commentDTO = new CommentDTO(comment);
+		return commentDTO;
+		}
 	}
 	
 	public Comment atualizar (Comment comment, Long id) {

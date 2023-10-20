@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.PostDTO;
+import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.service.PostService;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
 	
 	@Autowired
@@ -44,19 +45,19 @@ public class PostController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<PostDTO> inserir(@Valid @RequestBody PostDTO postDTO) {
-		PostDTO post = postService.inserir(postDTO);
+	public ResponseEntity<PostDTO> inserir(@Valid @RequestBody PostInserirDTO postInserirDTO) {
+		PostDTO postDTO = postService.inserir(postInserirDTO);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(postDTO.getId())
 				.toUri();
-		return ResponseEntity.created(uri).body(post);
+		return ResponseEntity.created(uri).body(postDTO);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<PostDTO> atualizar(@Valid @RequestBody Post post, @PathVariable Long id) {
-		PostDTO postDTO = postService.atualizar(post, id);
+	public ResponseEntity<PostDTO> atualizar(@Valid @RequestBody PostInserirDTO postInserirDTO, @PathVariable Long id) {
+		PostDTO postDTO = postService.atualizar(postInserirDTO, id);
 		if(postDTO == null) {
 			return ResponseEntity.notFound().build();
 		}

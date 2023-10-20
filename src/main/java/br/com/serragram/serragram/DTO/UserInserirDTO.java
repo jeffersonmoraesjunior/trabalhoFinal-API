@@ -2,6 +2,8 @@ package br.com.serragram.serragram.DTO;
 
 import java.util.Date;
 
+import br.com.serragram.serragram.model.User;
+
 
 public class UserInserirDTO {
 
@@ -12,6 +14,19 @@ public class UserInserirDTO {
 	private String senha;
 	private String confirmaSenha;
 	
+	private UserAlterarSenhaDTO userAlterarSenhaDTO;
+	
+	UserInserirDTO () {}
+	
+	public UserInserirDTO(User user, UserAlterarSenhaDTO userAlterarSenhaDTO) {
+		this.nome = user.getNome();
+		this.sobreNome = user.getSobreNome();
+		this.dataNascimento = user.getDataNascimento();
+		this.email = user.getEmail();
+		this.senha = userAlterarSenhaDTO.getNovaSenha();
+		this.confirmaSenha = userAlterarSenhaDTO.getConfirmaNovaSenha();
+		
+	}
 	public String getNome() {
 		return nome;
 	}

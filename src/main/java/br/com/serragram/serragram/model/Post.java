@@ -1,9 +1,12 @@
 package br.com.serragram.serragram.model;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -30,7 +36,9 @@ public class Post {
 	private String conteudo;
 
 	@Column(name = "data_criacao")
-	private Date dataCriaçao;
+	@Temporal(TemporalType.TIMESTAMP)
+	//@JsonFormat(pattern = "dd/MM/yyyy")
+	private Calendar dataCriaçao;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -41,6 +49,9 @@ public class Post {
 	@JsonManagedReference
 	private List<Comment> comentarios;
 
+	
+	public Post() {}
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,11 +68,11 @@ public class Post {
 		this.conteudo = conteudo;
 	}
 
-	public Date getDataCriaçao() {
+	public Calendar getDataCriaçao() {
 		return dataCriaçao;
 	}
 
-	public void setDataCriaçao(Date dataCriaçao) {
+	public void setDataCriaçao(Calendar dataCriaçao) {
 		this.dataCriaçao = dataCriaçao;
 	}
 	

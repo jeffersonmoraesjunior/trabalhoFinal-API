@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -51,17 +52,17 @@ public class User {
 	private String senha;
 
 
-	@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "autor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Post> posts;
 
-	@OneToMany(mappedBy = "id.userSeguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	/*@OneToMany(mappedBy = "id.userSeguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<Relationship> seguidores;
 	
 	@OneToMany(mappedBy = "id.userSeguido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
-	private List<Relationship> seguindo;
+	private List<Relationship> seguindo;*/
 
 	public User() {
 
@@ -132,7 +133,7 @@ public class User {
 		this.posts = posts;
 	}
 
-	public List<Relationship> getSeguidores() {
+/*	public List<Relationship> getSeguidores() {
 		return seguidores;
 	}
 
@@ -146,7 +147,7 @@ public class User {
 
 	public void setSeguindo(List<Relationship> seguindo) {
 		this.seguindo = seguindo;
-	}
+	}*/
 
 	
 }

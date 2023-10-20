@@ -1,6 +1,7 @@
 package br.com.serragram.serragram.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -10,7 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Comment {
@@ -24,20 +29,16 @@ public class Comment {
 	@Column
 	private String texto;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_criacao")
-	private Date dataCriaçao;
+	private Calendar dataCriaçao;
 
 	@ManyToOne
 	@JoinColumn(name = "post_id")
+	@JsonBackReference
 	private Post post;
 
 	public Comment() {
-	}
-
-	public Comment(Long id, @NotBlank(message = "insira um texto:") String texto, Date dataCriaçao) {
-		this.id = id;
-		this.texto = texto;
-		this.dataCriaçao = dataCriaçao;
 	}
 
 	public Long getId() {
@@ -56,12 +57,20 @@ public class Comment {
 		this.texto = texto;
 	}
 
-	public Date getDataCriaçao() {
+	public Calendar getDataCriaçao() {
 		return dataCriaçao;
 	}
 
-	public void setDataCriaçao(Date dataCriaçao) {
+	public void setDataCriaçao(Calendar dataCriaçao) {
 		this.dataCriaçao = dataCriaçao;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
 	}
 
 	@Override

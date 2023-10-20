@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.serragram.serragram.DTO.CommentDTO;
+import br.com.serragram.serragram.DTO.CommentInserirDTO;
 import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.service.CommentService;
 
@@ -34,21 +36,21 @@ public class CommentController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Comment> buscar(@PathVariable Long id) {
-		Comment comment = commentService.findById(id);
-		if (comment == null) {
+	public ResponseEntity<CommentDTO> buscar(@PathVariable Long id) {
+		CommentDTO commentDTO = commentService.findById(id);
+		if (commentDTO == null) {
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(comment);
+		return ResponseEntity.ok(commentDTO);
 	}
 
 	@PostMapping
-	public ResponseEntity<Comment> inserir(@Valid @RequestBody Comment comment) {
-		commentService.inserir(comment);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId())
+	public ResponseEntity<CommentDTO> inserir(@Valid @RequestBody CommentInserirDTO commentInserirDTO) {
+		CommentDTO commentDTO = commentService.inserir(commentInserirDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(commentDTO.getId())
 				.toUri();
-		return ResponseEntity.created(uri).body(comment);
+		return ResponseEntity.created(uri).body(commentDTO);
 	}
 
 	@PutMapping("/{id}")

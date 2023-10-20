@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
-<<<<<<< Updated upstream
-=======
 import br.com.serragram.serragram.exceptions.UserException;
-import br.com.serragram.serragram.model.User;
->>>>>>> Stashed changes
 import br.com.serragram.serragram.service.UserService;
 
 
@@ -59,13 +56,16 @@ public class UserController {
 		return ResponseEntity.created(uri).body(userDTO);
 	}
 
-<<<<<<< Updated upstream
-	@PutMapping("/all/{id}")
-	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserInserirDTO userInserirDTO, @PathVariable Long id) {
-		UserDTO userDTO = userService.atualizar(userInserirDTO, id);
-		if (userDTO == null) {
+
+	@PutMapping("/senha/{id}")
+	public ResponseEntity<UserInserirDTO> atualizarSenha(@Valid @RequestBody UserAlterarSenhaDTO userAlterarSenhaDTO, @PathVariable Long id) {
+		UserInserirDTO userInserirDTO = userService.atualizarSenha(userAlterarSenhaDTO, id);
+		if (userInserirDTO == null) {
 			return ResponseEntity.notFound().build();
-=======
+		}
+		return ResponseEntity.ok(userInserirDTO);
+	}
+
 	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) {
 		try {
@@ -73,7 +73,6 @@ public class UserController {
 			return ResponseEntity.ok(updateUser);
 		} catch (UserException e) {
 			throw new UserException("Erro ao atualizar o user{id}");
->>>>>>> Stashed changes
 		}
 	}
 	
