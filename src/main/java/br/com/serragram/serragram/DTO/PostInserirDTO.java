@@ -12,7 +12,6 @@ public class PostInserirDTO {
 		this.autor = autor;
 	}
 
-
 	public String getConteudo() {
 		return conteudo;
 	}

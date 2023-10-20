@@ -1,10 +1,7 @@
 package br.com.serragram.serragram.DTO;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import br.com.serragram.serragram.model.Comment;
+
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
 
@@ -14,7 +11,7 @@ public class PostDTO {
 	
 	private String conteudo;	
 	
-	private Calendar dataCricao;
+	private Calendar dataCriacao;
 	
 	private User autor;
 	
@@ -25,7 +22,7 @@ public class PostDTO {
 	public PostDTO(Post post) {
 		this.id = post.getId();
 		this.conteudo = post.getConteudo();
-		this.dataCricao = post.getDataCriaçao();
+		this.dataCriacao = post.getDataCriacao();
 		this.autor = post.getAutor();
 		/*this.comentarios = new ArrayList<>();
 		for (Comment comments : post.getComentarios()) {
@@ -50,11 +47,11 @@ public class PostDTO {
 		this.conteudo = conteudo;
 	}
 	public Calendar getDataCricao() {
-		return dataCricao;
+		return dataCriacao;
 	}
 	
 	public void setDataCricao(Calendar dataCricao) {
-		this.dataCricao = dataCricao;
+		this.dataCriacao = dataCricao;
 	}
 
 	public User getAutor() {

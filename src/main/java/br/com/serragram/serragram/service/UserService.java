@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
+import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UserException;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.UserRepository;
@@ -26,6 +27,9 @@ public class UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private MailConfig mailConfig;
 
 	/*
 	 * @Autowired private RelationshipRepository relationshipRepository;
@@ -68,6 +72,7 @@ public class UserService {
 		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
 
 		user = userRepository.save(user);
+		mailConfig.sendEmail(user.getEmail(), "Cadastro Realizado!", user.toString());
 		UserDTO userDTO = new UserDTO(user);
 		return userDTO;
 	}

@@ -1,5 +1,6 @@
 package br.com.serragram.serragram.model;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Objects;
@@ -71,6 +72,16 @@ public class Comment {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+
+	@Override
+	public String toString() {
+		return "Comentário: " + texto
+				+"Data Criaçao: " + sdf.format(dataCriaçao)
+				+"Post: " + post;
 	}
 
 	@Override

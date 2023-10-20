@@ -25,7 +25,7 @@ public class UserDTO {
 		this.sobreNome = user.getSobreNome();
 		this.email = user.getEmail();
 		this.dataNascimento = user.getDataNascimento();
-		this.posts = user.getPosts();
+//		this.posts = user.getPosts();
 	}
 	
 	public Long getId() {

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
+import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.PostException;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
@@ -27,6 +28,9 @@ public class PostService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private MailConfig mailConfig;
 	
 	//GetAll
 	public List<PostDTO> findAll(){
@@ -54,7 +58,7 @@ public class PostService {
 		
 		Post post = new Post();
 		post.setConteudo(postInserirDTO.getConteudo());
-		post.setDataCriaçao(Calendar.getInstance());
+		post.setDataCriacao(Calendar.getInstance());
 		Integer cont = 0;
 		for (User user : userRepository.findAll()) {
 			if(user.getId() == postInserirDTO.getAutor().getId()) {
@@ -69,6 +73,8 @@ public class PostService {
 		else
 		{
 		post = postRepository.save(post);
+		User user = new User();
+		mailConfig.sendEmail(user.getEmail(), "Você fez um Novo Post...", user.toString());
 		PostDTO postDTO = new PostDTO(post);
 		return postDTO;
 		}

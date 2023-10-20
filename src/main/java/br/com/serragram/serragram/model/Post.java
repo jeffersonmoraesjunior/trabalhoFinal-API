@@ -1,12 +1,10 @@
 package br.com.serragram.serragram.model;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +18,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -38,7 +35,7 @@ public class Post {
 	@Column(name = "data_criacao")
 	@Temporal(TemporalType.TIMESTAMP)
 	//@JsonFormat(pattern = "dd/MM/yyyy")
-	private Calendar dataCriaçao;
+	private Calendar dataCriacao;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -68,12 +65,12 @@ public class Post {
 		this.conteudo = conteudo;
 	}
 
-	public Calendar getDataCriaçao() {
-		return dataCriaçao;
+	public Calendar getDataCriacao() {
+		return dataCriacao;
 	}
 
-	public void setDataCriaçao(Calendar dataCriaçao) {
-		this.dataCriaçao = dataCriaçao;
+	public void setDataCriacao(Calendar dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 	
 	
@@ -92,6 +89,14 @@ public class Post {
 
 	public void setComentarios(List<Comment> comentarios) {
 		this.comentarios = comentarios;
+	}
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	@Override
+	public String toString() {
+		return "Post: " + conteudo 
+				+"Data Criaçao: " + sdf.format(dataCriacao)
+				+"Autor: " + autor;
 	}
 
 	@Override

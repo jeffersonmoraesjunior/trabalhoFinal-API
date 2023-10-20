@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
 import br.com.serragram.serragram.DTO.PostDTO;
+import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.PostException;
 import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
@@ -27,6 +28,9 @@ public class CommentService {
 	
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private MailConfig mailConfig; 
 	
 	public List <Comment>findAll(){
 		List<Comment> comments =  commentRepository.findAll();
@@ -62,6 +66,7 @@ public class CommentService {
 		{
 		comment = commentRepository.save(comment);
 		CommentDTO commentDTO = new CommentDTO(comment);
+		mailConfig.sendEmail(commentInserirDTO.getPost().getAutor().getEmail(), "Você tem um novo Comentário...", comment.toString());
 		return commentDTO;
 		}
 	}

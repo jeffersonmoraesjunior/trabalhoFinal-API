@@ -1,5 +1,6 @@
 package br.com.serragram.serragram.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -133,6 +133,17 @@ public class User {
 		this.posts = posts;
 	}
 
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	
+	@Override
+	public String toString() {
+		return "Nome: " + nome + " " + sobreNome
+				+ "\nData de Nascimento: " + sdf.format(dataNascimento)
+				+ "\nEmail: " + email;
+	}
+
+	
+
 /*	public List<Relationship> getSeguidores() {
 		return seguidores;
 	}
@@ -149,5 +160,6 @@ public class User {
 		this.seguindo = seguindo;
 	}*/
 
+	
 	
 }
