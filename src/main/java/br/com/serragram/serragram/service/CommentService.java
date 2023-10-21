@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
-import br.com.serragram.serragram.exceptions.PostException;
+import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
@@ -50,7 +50,7 @@ public class CommentService {
 	}
 
 	@Transactional
-	public CommentDTO inserir(CommentInserirDTO commentInserirDTO) throws PostException {
+	public CommentDTO inserir(CommentInserirDTO commentInserirDTO) throws UnprocessableEntityException {
 		Comment comment = new Comment();
 		comment.setTexto(commentInserirDTO.getTexto());
 		comment.setDataCriaçao(Calendar.getInstance());
@@ -59,9 +59,9 @@ public class CommentService {
 		Optional<Post> postOpt = postRepository.findById(commentInserirDTO.getPostId());
 		
 		if(userOpt.isEmpty()) {
-			throw new PostException("Autor não encontrado."); 
+			throw new UnprocessableEntityException("Autor não encontrado."); 
 		} else if(postOpt.isEmpty()) {
-			throw new PostException("Post não encontrado.");
+			throw new UnprocessableEntityException("Post não encontrado.");
 		}
 				
 		comment.setAutorComentario(userOpt.get());

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
-import br.com.serragram.serragram.exceptions.PostException;
+import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.PostRepository;
@@ -39,10 +39,10 @@ public class PostService {
 	}
 	
 	//Get ID
-	public PostDTO findById(Long id) throws PostException {
+	public PostDTO findById(Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {
-			throw new PostException("Post Inexistente");
+			throw new UnprocessableEntityException("Post Inexistente");
 		}
 		PostDTO postDTO = new PostDTO(postOpt.get());
 		return postDTO;
@@ -50,9 +50,9 @@ public class PostService {
 
 	//Post
 	@Transactional
-	public PostDTO inserir(PostInserirDTO postInserirDTO) throws PostException {
+	public PostDTO inserir(PostInserirDTO postInserirDTO) throws UnprocessableEntityException {
 		if(postInserirDTO.getConteudo().isEmpty()) {
-			throw new PostException("Insira um conteúdo.");
+			throw new UnprocessableEntityException("Insira um conteúdo.");
 		}
 		
 		Post post = new Post();
@@ -61,7 +61,7 @@ public class PostService {
 		
 		Optional<User> userOpt = userRepository.findById(postInserirDTO.getAutorId());
 		if(userOpt.isEmpty()) {
-			throw new PostException("Autor não encontrado."); 
+			throw new UnprocessableEntityException("Autor não encontrado."); 
 		}
 		
 		post.setAutor(userOpt.get());
@@ -74,10 +74,10 @@ public class PostService {
 	}
 	
 	//Put
-	public PostDTO atualizar(PostInserirDTO postInserirDTO, Long id) throws PostException {
+	public PostDTO atualizar(PostInserirDTO postInserirDTO, Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {
-			throw new PostException("Post não encontrado, verifique novamente.");
+			throw new UnprocessableEntityException("Post não encontrado, verifique novamente.");
 		}
 		Post post = postOpt.get();
 		post.setId(id);
@@ -88,10 +88,10 @@ public class PostService {
 	}
 	
 	//Delete
-	public void remover(Long id) throws PostException {
+	public void remover(Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {
-			throw new PostException("Post não encontrado, verifique novamente.");
+			throw new UnprocessableEntityException("Post não encontrado, verifique novamente.");
 		}
 		postRepository.deleteById(id);
 	}

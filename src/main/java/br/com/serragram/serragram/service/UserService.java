@@ -14,7 +14,7 @@ import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
-import br.com.serragram.serragram.exceptions.UserException;
+import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.UserRepository;
 import br.com.serragram.serragram.utils.Util;
@@ -54,14 +54,14 @@ public class UserService {
 
 	// Post
 	@Transactional
-	public UserDTO inserir(UserInserirDTO userInserirDTO) throws UserException {
+	public UserDTO inserir(UserInserirDTO userInserirDTO) throws UnprocessableEntityException {
 		if (!userInserirDTO.getSenha().equalsIgnoreCase(userInserirDTO.getConfirmaSenha())) {
-			throw new UserException("Senha e confirma senha devem ser idênticas.");
+			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
 
 		User userEmailExistente = userRepository.findByEmail(userInserirDTO.getEmail());
 		if (userEmailExistente != null) {
-			throw new UserException("E-mail já cadastrado.");
+			throw new UnprocessableEntityException("E-mail já cadastrado.");
 		}
 
 		User user = new User();
@@ -78,13 +78,13 @@ public class UserService {
 	}
 
 	// PutSenha
-	public UserInserirDTO atualizarSenha(UserAlterarSenhaDTO userAlterarSenhaDTO, Long id) throws UserException {
+	public UserInserirDTO atualizarSenha(UserAlterarSenhaDTO userAlterarSenhaDTO, Long id) throws UnprocessableEntityException {
 		if (!userAlterarSenhaDTO.getNovaSenha().equalsIgnoreCase(userAlterarSenhaDTO.getConfirmaNovaSenha())) {
-			throw new UserException("Senha e confirma senha devem ser idênticas.");
+			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			throw new UserException("Id não existente");
+			throw new UnprocessableEntityException("Id não existente");
 		}
 		User user = userOpt.get();
 		user.setId(id);
@@ -95,10 +95,10 @@ public class UserService {
 	}
 
 	// Put
-	public UserDTO atualizar(UserDTO userDTO, Long id) throws UserException {
+	public UserDTO atualizar(UserDTO userDTO, Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			throw new UserException("Id não existente");
+			throw new UnprocessableEntityException("Id não existente");
 		}
 		User user = userOpt.get();
 		user.setId(id);
@@ -109,10 +109,10 @@ public class UserService {
 	}
 
 	// Delete
-	public void remover(Long id) throws UserException {
+	public void remover(Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			throw new UserException("Não existe este id."); // lançando exceção default
+			throw new UnprocessableEntityException("Não existe este id."); // lançando exceção default
 		}
 		userRepository.deleteById(id);
 	}

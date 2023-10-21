@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
-import br.com.serragram.serragram.exceptions.UserException;
+import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.UserService;
 
 
@@ -71,8 +71,8 @@ public class UserController {
 		try {
 			UserDTO updateUser = userService.atualizar(userDTO, id);
 			return ResponseEntity.ok(updateUser);
-		} catch (UserException e) {
-			throw new UserException("Erro ao atualizar o user{id}");
+		} catch (UnprocessableEntityException e) {
+			throw new UnprocessableEntityException("Erro ao atualizar o user{id}");
 		}
 	}
 	

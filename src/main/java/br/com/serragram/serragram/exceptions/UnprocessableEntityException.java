@@ -1,10 +1,10 @@
 package br.com.serragram.serragram.exceptions;
 
-public class UserException extends RuntimeException{
+public class UnprocessableEntityException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 
-	public UserException(String message) {
+	public UnprocessableEntityException(String message) {
 		super (message);
 		
 	}

@@ -39,15 +39,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
 	
-	@ExceptionHandler(UserException.class)
-	protected ResponseEntity<?> handleUserException (Exception ex) {
+	@ExceptionHandler(UnprocessableEntityException.class)
+	protected ResponseEntity<?> handleUnprocessableEntityException (Exception ex) {
 		
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
 	
-	@ExceptionHandler(PostException.class)
-	protected ResponseEntity<?> handlePostException (Exception ex) {
-		
-		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
-	}
 }
