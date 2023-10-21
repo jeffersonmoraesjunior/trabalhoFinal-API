@@ -21,6 +21,7 @@ import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
+import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.service.UserService;
 
 
@@ -45,7 +46,7 @@ public class UserController {
 		return ResponseEntity.ok(userDTO);
 	}
 
-	@PostMapping
+	@PostMapping("/cadastro")
 	public ResponseEntity<UserDTO> inserir(@Valid @RequestBody UserInserirDTO userInserirDTO) {
 		UserDTO userDTO = userService.inserir(userInserirDTO);
 		URI uri = ServletUriComponentsBuilder
@@ -67,13 +68,19 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserDTO userDTO, @PathVariable Long id) {
-		try {
-			UserDTO updateUser = userService.atualizar(userDTO, id);
+	public ResponseEntity<UserDTO> atualizar(@Valid @RequestBody UserInserirDTO userInserirDTO, @PathVariable Long id) {
+		UserDTO userDTO = userService.atualizar(userInserirDTO, id);
+		if(userDTO == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(userDTO);
+		
+		/*try {
+			UserDTO updateUser = userService.atualizar(userInserirDTO, id);
 			return ResponseEntity.ok(updateUser);
 		} catch (UnprocessableEntityException e) {
 			throw new UnprocessableEntityException("Erro ao atualizar o user{id}");
-		}
+		}*/
 	}
 	
 	@DeleteMapping("/{id}")

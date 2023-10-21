@@ -42,7 +42,7 @@ public class PostService {
 	public PostDTO findById(Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {
-			throw new UnprocessableEntityException("Post Inexistente");
+			throw new UnprocessableEntityException("Post Inexistente!");
 		}
 		PostDTO postDTO = new PostDTO(postOpt.get());
 		return postDTO;
@@ -81,6 +81,7 @@ public class PostService {
 		}
 		Post post = postOpt.get();
 		post.setId(id);
+		post.setDataCriacao(Calendar.getInstance());
 		Util.copyNonNullProperties(postInserirDTO, post);
 		postRepository.save(post);
 		PostDTO postDTO = new PostDTO(post);
@@ -88,6 +89,7 @@ public class PostService {
 	}
 	
 	//Delete
+	@Transactional
 	public void remover(Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {

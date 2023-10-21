@@ -1,5 +1,6 @@
 package br.com.serragram.serragram.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -38,6 +40,7 @@ public class User {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento", nullable = false)
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	
 	@NotBlank(message = "Preencha o Email")
@@ -140,11 +143,11 @@ public class User {
 //		this.comments = comments;
 //	}
 
-//	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	@Override
 	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		return "Nome: " + nome + " " + sobreNome
-				+ "\nData de Nascimento: " + dataNascimento
+				+ "\nData de Nascimento: " + sdf.format(dataNascimento)
 				+ "\nEmail: " + email;
 	}
 

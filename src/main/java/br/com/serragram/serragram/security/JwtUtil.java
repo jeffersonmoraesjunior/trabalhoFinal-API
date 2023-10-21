@@ -21,9 +21,8 @@ public class JwtUtil {
 	@Value("${auth.jwt-expiration-miliseg}")
 	private Long jwtExpirationMiliseg;
 	
-	public String generateToken(String username, String perfil) {
+	public String generateToken(String username) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("perfil", perfil);
 		SecretKey secretKeySpec = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 		return Jwts.builder()
 				.setSubject(username)

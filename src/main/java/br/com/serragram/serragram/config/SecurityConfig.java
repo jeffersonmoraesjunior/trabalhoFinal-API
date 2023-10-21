@@ -16,7 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.com.serragram.serragram.DTO.LoginDTO;
 import br.com.serragram.serragram.security.JwtAuthenticationFilter;
 import br.com.serragram.serragram.security.JwtAuthorizationFilter;
 import br.com.serragram.serragram.security.JwtUtil;
@@ -40,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests()
-		.antMatchers("/**").permitAll()
+		.antMatchers(HttpMethod.POST, "/users/cadastro").permitAll()
+		.anyRequest().authenticated()
 		.and()
 		.httpBasic()
 		.and()

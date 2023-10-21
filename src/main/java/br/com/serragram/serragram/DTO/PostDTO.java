@@ -3,7 +3,6 @@ package br.com.serragram.serragram.DTO;
 import java.util.Calendar;
 
 import br.com.serragram.serragram.model.Post;
-import br.com.serragram.serragram.model.User;
 
 public class PostDTO {
 	
@@ -13,9 +12,11 @@ public class PostDTO {
 	
 	private Calendar dataCriacao;
 	
-	private User autor;
+	private Long autorId;
 	
-	//private List<Comment> comentarios;
+	private String nomeAutor;
+	
+	private String sobrenomeAutor;
 	
 	public PostDTO() {}
 	
@@ -23,13 +24,9 @@ public class PostDTO {
 		this.id = post.getId();
 		this.conteudo = post.getConteudo();
 		this.dataCriacao = post.getDataCriacao();
-		this.autor = post.getAutor();
-		/*this.comentarios = new ArrayList<>();
-		for (Comment comments : post.getComentarios()) {
-			if (comments.getPost().getId() == post.getId()) {
-				comentarios.add(comments);
-			}
-		}*/
+		this.autorId = post.getAutor().getId();
+		this.nomeAutor = post.getAutor().getNome();
+		this.sobrenomeAutor = post.getAutor().getSobreNome();
 	}
 	
 	public Long getId() {
@@ -54,16 +51,29 @@ public class PostDTO {
 		this.dataCriacao = dataCricao;
 	}
 
-	public User getAutor() {
-		return autor;
+	public Long getAutorId() {
+		return autorId;
 	}
 
-	public void setAutor(User autor) {
-		this.autor = autor;
+	public void setAutorId(Long autorId) {
+		this.autorId = autorId;
 	}
 
+	public String getNomeAutor() {
+		return nomeAutor;
+	}
 
-	
+	public void setNomeAutor(String nomeAutor) {
+		this.nomeAutor = nomeAutor;
+	}
+
+	public String getSobrenomeAutor() {
+		return sobrenomeAutor;
+	}
+
+	public void setSobrenomeAutor(String sobrenomeAutor) {
+		this.sobrenomeAutor = sobrenomeAutor;
+	}
 
 	
 

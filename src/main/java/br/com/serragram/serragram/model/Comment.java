@@ -1,7 +1,6 @@
 package br.com.serragram.serragram.model;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -32,7 +31,7 @@ public class Comment {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_criacao")
-	private Calendar dataCriaçao;
+	private Calendar dataCriacao;
 
 	@ManyToOne
 	@JoinColumn(name = "post_id")
@@ -63,12 +62,12 @@ public class Comment {
 		this.texto = texto;
 	}
 
-	public Calendar getDataCriaçao() {
-		return dataCriaçao;
+	public Calendar getDataCriacao() {
+		return dataCriacao;
 	}
 
-	public void setDataCriaçao(Calendar dataCriaçao) {
-		this.dataCriaçao = dataCriaçao;
+	public void setDataCriacao(Calendar dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
 
 	public Post getPost() {
@@ -89,9 +88,11 @@ public class Comment {
 
 	@Override
 	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		return "Comentário: " + texto
-				+"Data Criaçao: " + dataCriaçao
-				+"Post: " + post;
+				+"\nData Criaçao: " + sdf.format(dataCriacao.getTime())
+				+"\n\nPost: " + post.getConteudo()
+				+"\nData Criação do Post: " + sdf.format(post.getDataCriacao().getTime());
 	}
 
 	@Override

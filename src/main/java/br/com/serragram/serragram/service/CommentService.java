@@ -3,6 +3,7 @@ package br.com.serragram.serragram.service;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +20,7 @@ import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.CommentRepository;
 import br.com.serragram.serragram.repository.PostRepository;
 import br.com.serragram.serragram.repository.UserRepository;
+import br.com.serragram.serragram.utils.Util;
 
 @Service
 public class CommentService {
@@ -35,15 +37,16 @@ public class CommentService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<Comment> findAll() {
+	public List<CommentDTO> findAll() {
 		List<Comment> comments = commentRepository.findAll();
-		return comments;
+		List<CommentDTO> commentDTO = comments.stream().map(comment -> new CommentDTO(comment)).collect(Collectors.toList());
+		return commentDTO;
 	}
 
-	public CommentDTO findById(Long id) {
+	public CommentDTO findById(Long id) throws UnprocessableEntityException  {
 		Optional<Comment> comment = commentRepository.findById(id);
 		if (comment.isEmpty()) {
-			return null;
+			throw new UnprocessableEntityException("Comentário inexistente!");
 		}
 
 		return new CommentDTO(comment.get());
@@ -53,7 +56,7 @@ public class CommentService {
 	public CommentDTO inserir(CommentInserirDTO commentInserirDTO) throws UnprocessableEntityException {
 		Comment comment = new Comment();
 		comment.setTexto(commentInserirDTO.getTexto());
-		comment.setDataCriaçao(Calendar.getInstance());
+		comment.setDataCriacao(Calendar.getInstance());
 		
 		Optional<User> userOpt = userRepository.findById(commentInserirDTO.getAutorId());
 		Optional<Post> postOpt = postRepository.findById(commentInserirDTO.getPostId());
@@ -69,27 +72,31 @@ public class CommentService {
 		
 		comment = commentRepository.save(comment);
 		CommentDTO commentDTO = new CommentDTO(comment);
-		String email = userOpt.get().getEmail();
-		mailConfig.sendEmail(email, "Você fez um Novo Post...", comment.toString());
+		String email = postOpt.get().getAutor().getEmail();
+		mailConfig.sendEmail(email, userOpt.get().getNome() + " fez um comentário no seu post!!!", comment.toString());
 		return commentDTO;
 		
 	}
 
-	public Comment atualizar(Comment comment, Long id) {
+	public CommentDTO atualizar(CommentInserirDTO commentInserirDTO, Long id) throws UnprocessableEntityException  {
 		Optional<Comment> commentOpt = commentRepository.findById(id);
 		if (commentOpt.isEmpty()) {
-			return null;
+			throw new UnprocessableEntityException("Comentário não encontrado, verifique novamente.");
 		}
-
+		Comment comment = commentOpt.get();
 		comment.setId(id);
+		comment.setDataCriacao(Calendar.getInstance());
+		Util.copyNonNullProperties(commentInserirDTO, comment);
 		comment = commentRepository.save(comment);
-		return comment;
+		CommentDTO commentDTO = new CommentDTO(comment);
+		return commentDTO;
 	}
 
-	public void remover(Long id) {
+	@Transactional
+	public void remover(Long id) throws UnprocessableEntityException  {
 		Optional<Comment> commentOpt = commentRepository.findById(id);
 		if (commentOpt.isEmpty()) {
-			// return null;//
+			throw new UnprocessableEntityException("Comentário não encontrado, verifique novamente.");
 		}
 
 		commentRepository.delete(commentOpt.get());

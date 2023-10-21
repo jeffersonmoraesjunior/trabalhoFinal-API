@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
+import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.PostService;
 
 @RestController
@@ -56,11 +58,13 @@ public class PostController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<PostDTO> atualizar(@Valid @RequestBody PostInserirDTO postInserirDTO, @PathVariable Long id) {
-		PostDTO postDTO = postService.atualizar(postInserirDTO, id);
-		if(postDTO == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			PostDTO updatePost = postService.atualizar(postInserirDTO, id);
+			return ResponseEntity.ok(updatePost);
+		} catch (UnprocessableEntityException e) {
+			throw new UnprocessableEntityException("Erro ao atualizar o user{id}");
 		}
-		return ResponseEntity.ok(postDTO);
+
 	}
 	
 	@DeleteMapping("/{id}")

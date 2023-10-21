@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
@@ -23,33 +23,33 @@ public class RelationshipService {
 
 	@Autowired
 	private RelationshipRepository relationshipRepository;
-	
+
 	@Autowired
 	private MailConfig mailConfig;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
-	public List<RelationshipDTO> findAll(){
+
+	public List<RelationshipDTO> findAll() {
 		List<Relationship> relationships = relationshipRepository.findAll();
-		List<RelationshipDTO> relationshipDTO = relationships.stream().map(relationship -> new RelationshipDTO(relationship)).collect(Collectors.toList());
+		List<RelationshipDTO> relationshipDTO = relationships.stream()
+				.map(relationship -> new RelationshipDTO(relationship)).collect(Collectors.toList());
 		return relationshipDTO;
 	}
-	
 
-	//Post
+	// Post
 	@Transactional
 	public RelationshipDTO inserir(RelationshipInserirDTO relationshipInserirDTO) throws UnprocessableEntityException {
 		Relationship relationship = new Relationship();
 		Optional<User> seguidorOpt = userRepository.findById(relationshipInserirDTO.getSeguidorId());
 		Optional<User> seguidoOpt = userRepository.findById(relationshipInserirDTO.getSeguidoId());
-		if(relationshipInserirDTO.getSeguidorId() == relationshipInserirDTO.getSeguidoId()) {
+		if (relationshipInserirDTO.getSeguidorId() == relationshipInserirDTO.getSeguidoId()) {
 			throw new UnprocessableEntityException("Mesmo ID, favor informar IDs diferentes.");
 		}
-		if(seguidorOpt.isEmpty()) {
+		if (seguidorOpt.isEmpty()) {
 			throw new UnprocessableEntityException("seguidorId não encontrado, verifique novamente.");
-		} 
-		if(seguidoOpt.isEmpty()) {
+		}
+		if (seguidoOpt.isEmpty()) {
 			throw new UnprocessableEntityException("seguidoId não encontrado, verifique novamente.");
 		}
 		relationship.getId().setUserSeguidor(seguidorOpt.get());
@@ -58,18 +58,31 @@ public class RelationshipService {
 		relationship = relationshipRepository.save(relationship);
 		RelationshipDTO relationshipDTO = new RelationshipDTO(relationship);
 		String email = relationship.getId().getUserSeguido().getEmail();
-		mailConfig.sendEmail(email, "Você tem um novo seguidor...", relationship.getId().getUserSeguidor().getNome()+" seguiu você!");
+		mailConfig.sendEmail(email, "Você tem um novo seguidor...",
+				relationship.getId().getUserSeguidor().getNome() + " seguiu você!");
 		return relationshipDTO;
-		
+
 	}
-	
-	
-	//Delete
+
+	// Delete
+	@Transactional
 	public void remover(Long seguidorId, Long seguidoId) throws UnprocessableEntityException {
-		Optional<Relationship> relationshipOpt = relationshipRepository.findRelationship(seguidorId, seguidoId);
+		Optional<Relationship> relationshipOpt = relationshipRepository.findByIdUserSeguidorIdAndIdUserSeguidoId(seguidorId, seguidoId);
 		if(relationshipOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Relacionamento não encontrado, verifique novamente.");
 		}
-		relationshipRepository.deleteRelationship(seguidorId, seguidoId);
+		
+		relationshipRepository.deleteByIdUserSeguidorIdAndIdUserSeguidoId(seguidorId, seguidoId);
+		/*EntityManager entityManager;// Obtenha o EntityManager de sua unidade de persistência
+		RelationshipPK chaveParaExcluir = new RelationshipPK(seguidorId, seguidoId); // Substitua id1 e id2 pelos valores reais
+
+		Relationship relacionamentoParaExcluir = entityManager.find(Relationship.class, chaveParaExcluir);
+
+				if (relacionamentoParaExcluir != null) {
+				    entityManager.getTransaction().begin();
+				    entityManager.remove(relacionamentoParaExcluir);
+				    entityManager.getTransaction().commit();
+				}*/
+
 	}
 }

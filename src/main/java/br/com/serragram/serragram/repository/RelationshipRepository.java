@@ -11,10 +11,13 @@ import br.com.serragram.serragram.model.Relationship;
 @Repository
 public interface RelationshipRepository extends JpaRepository<Relationship, Long> {
 
-	@Query(value = "SELECT * FROM relatonship r WHERE r.id_user_seguidor = :seguidorId AND r.id_user_seguido = :seguidoId", nativeQuery = true)
-	Optional<Relationship> findRelationship(Long seguidorId, Long seguidoId);
+	//@Query(value = "SELECT * FROM relationship WHERE id_user_seguidor = :seguidorId AND id_user_seguido = :seguidoId", nativeQuery = true)
+	//Optional<Relationship> findRelationship(Long seguidorId, Long seguidoId);
 	
-	@Query(value = "DELETE FROM relatonship r WHERE r.id_user_seguidor = :seguidorId AND r.id_user_seguido = :seguidoId", nativeQuery = true)
-	Optional<Relationship> deleteRelationship(Long seguidorId, Long seguidoId);
+	Optional<Relationship> findByIdUserSeguidorIdAndIdUserSeguidoId(Long seguidorId, Long seguidoId);
 	
+	//@Query(value = "DELETE FROM relationship WHERE id_user_seguidor = :seguidorId AND id_user_seguido = :seguidoId", nativeQuery = true)
+	//Optional<Relationship> deleteRelationship(Long seguidorId, Long seguidoId);
+	
+	void deleteByIdUserSeguidorIdAndIdUserSeguidoId(Long seguidorId, Long seguidoId);
 }

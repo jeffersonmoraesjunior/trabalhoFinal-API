@@ -43,10 +43,10 @@ public class UserService {
 	}
 
 	// GetId
-	public UserDTO findById(Long id) {
+	public UserDTO findById(Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
-			return null;
+			throw new UnprocessableEntityException("Usuário inexistente!!");
 		}
 		UserDTO userDTO = new UserDTO(userOpt.get());
 		return userDTO;
@@ -78,6 +78,7 @@ public class UserService {
 	}
 
 	// PutSenha
+	@Transactional
 	public UserInserirDTO atualizarSenha(UserAlterarSenhaDTO userAlterarSenhaDTO, Long id) throws UnprocessableEntityException {
 		if (!userAlterarSenhaDTO.getNovaSenha().equalsIgnoreCase(userAlterarSenhaDTO.getConfirmaNovaSenha())) {
 			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
@@ -95,20 +96,27 @@ public class UserService {
 	}
 
 	// Put
-	public UserDTO atualizar(UserDTO userDTO, Long id) throws UnprocessableEntityException {
+	@Transactional
+	public UserDTO atualizar(UserInserirDTO userInserirDTO, Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Id não existente");
 		}
 		User user = userOpt.get();
+		String senha = user.getSenha();
+		if(userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
+			throw new UnprocessableEntityException("Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
+		}
 		user.setId(id);
+		Util.copyNonNullProperties(userInserirDTO, user);
 		// ele faz a copia dos atributos não nulos de user para userDTO
-		Util.copyNonNullProperties(userDTO, user);
+		user.setSenha(senha);
 		userRepository.save(user);
 		return new UserDTO(user);
 	}
 
 	// Delete
+	@Transactional
 	public void remover(Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
