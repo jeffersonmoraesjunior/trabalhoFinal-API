@@ -2,6 +2,7 @@ package br.com.serragram.serragram.service;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +34,7 @@ public class UserService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
 	private MailConfig mailConfig;
 
@@ -45,9 +48,9 @@ public class UserService {
 	public List<UserDTO> findAll() {
 		List<User> users = userRepository.findAll();
 		List<UserDTO> usersDTO = users.stream().map(usuario -> {
-			return adicionaImagemURI(usuario);})
-				.collect(Collectors.toList());
-		
+			return adicionaImagemURI(usuario);
+		}).collect(Collectors.toList());
+
 		return usersDTO;
 	}
 
@@ -60,9 +63,19 @@ public class UserService {
 		return adicionaImagemURI(userOpt.get());
 	}
 
+//	// GetNativo
+//	public Page<UserDTO> buscarDataNascimento(Date dataMinima, Date dataMaxima, Pageable Pageable) {
+//		Page<UserDTO> buscarDataNativo = userRepository.buscarDataNativo(dataMinima, dataMaxima, Pageable);
+//		if(buscarDataNativo.isEmpty()) {
+//			throw new UnprocessableEntityException("Não existe usuario nessa faixa de Data");
+//		}		
+//		return buscarDataNativo;
+//	}
+
 	// Post
 	@Transactional
-	public UserDTO inserir(UserInserirDTO userInserirDTO, MultipartFile file) throws UnprocessableEntityException, IOException {
+	public UserDTO inserir(UserInserirDTO userInserirDTO, MultipartFile file)
+			throws UnprocessableEntityException, IOException {
 		if (!userInserirDTO.getSenha().equalsIgnoreCase(userInserirDTO.getConfirmaSenha())) {
 			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
@@ -71,24 +84,25 @@ public class UserService {
 		if (userEmailExistente != null) {
 			throw new UnprocessableEntityException("E-mail já cadastrado.");
 		}
-		
+
 		User user = new User();
 		user.setNome(userInserirDTO.getNome());
 		user.setSobreNome(userInserirDTO.getSobreNome());
 		user.setDataNascimento(userInserirDTO.getDataNascimento());
 		user.setEmail(userInserirDTO.getEmail());
 		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
-		
+
 		user = userRepository.save(user);
 		fotoService.inserir(user, file);
-		
+
 		mailConfig.sendEmail(user.getEmail(), "Cadastro Realizado!", user.toString());
 		return adicionaImagemURI(user);
 	}
 
 	// PutSenha
 	@Transactional
-	public UserInserirDTO atualizarSenha(UserAlterarSenhaDTO userAlterarSenhaDTO, Long id) throws UnprocessableEntityException {
+	public UserInserirDTO atualizarSenha(UserAlterarSenhaDTO userAlterarSenhaDTO, Long id)
+			throws UnprocessableEntityException {
 		if (!userAlterarSenhaDTO.getNovaSenha().equalsIgnoreCase(userAlterarSenhaDTO.getConfirmaNovaSenha())) {
 			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
@@ -113,8 +127,9 @@ public class UserService {
 		}
 		User user = userOpt.get();
 		String senha = user.getSenha();
-		if(userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
-			throw new UnprocessableEntityException("Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
+		if (userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
+			throw new UnprocessableEntityException(
+					"Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
 		}
 		user.setId(id);
 		Util.copyNonNullProperties(userInserirDTO, user);
@@ -133,18 +148,15 @@ public class UserService {
 		}
 		userRepository.deleteById(id);
 	}
-	
-//	=====================================================
-	
-	public UserDTO adicionaImagemURI(User user) {
-        URI uri = ServletUriComponentsBuilder.
-                fromCurrentContextPath()
-                .path("/user/{id}/foto")
-                .buildAndExpand(user.getId())
-                .toUri();
 
-        UserDTO dto = new UserDTO(user);
-        dto.setUrl(uri.toString());
-        return dto;
-    }
+//	=====================================================
+
+	public UserDTO adicionaImagemURI(User user) {
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/{id}/foto")
+				.buildAndExpand(user.getId()).toUri();
+
+		UserDTO dto = new UserDTO(user);
+		dto.setUrl(uri.toString());
+		return dto;
+	}
 }

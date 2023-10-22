@@ -8,7 +8,10 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
@@ -35,6 +38,14 @@ public class RelationshipService {
 		List<RelationshipDTO> relationshipDTO = relationships.stream()
 				.map(relationship -> new RelationshipDTO(relationship)).collect(Collectors.toList());
 		return relationshipDTO;
+	}
+	
+	public Page<Relationship> buscarSeguidores(Long id, Pageable pageable){
+		Page<Relationship> seguidores = relationshipRepository.findByIdUserSeguidoId(id, pageable);		
+		if (seguidores.isEmpty()) {
+			throw new UnprocessableEntityException("Este usuário não tem seguidores");
+		}
+		return seguidores;		
 	}
 
 	// Post

@@ -24,6 +24,9 @@ public interface RelationshipRepository extends JpaRepository<Relationship, Long
 	
 	void deleteByIdUserSeguidorIdAndIdUserSeguidoId(Long seguidorId, Long seguidoId);
 	
-	@Query(value = "select * from relationship WHERE id_user_seguido = 1", nativeQuery = true)
-	 Optional<Page<RelationshipDTO>> buscarSeguidores(Pageable pageable);
+//	@Query(value = "select * from relationship r WHERE r.id.userSeguido.id = :id", nativeQuery = true)
+//	Page<Relationship> buscarSeguidores(Long id, Pageable pageable);
+	
+	Page<Relationship> findByIdUserSeguidoId(Long id, Pageable pageable);
+	
 }
