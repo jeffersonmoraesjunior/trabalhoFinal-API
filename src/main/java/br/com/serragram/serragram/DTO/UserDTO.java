@@ -14,6 +14,7 @@ public class UserDTO {
 	private String sobreNome;
 	private String email;
 	private Date dataNascimento;
+	private String url;
 	private List<Post> posts;
 	
 	public UserDTO() {}
@@ -25,6 +26,14 @@ public class UserDTO {
 		this.email = user.getEmail();
 		this.dataNascimento = user.getDataNascimento();
 		this.posts = user.getPosts();
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 	public Long getId() {

@@ -3,6 +3,7 @@ package br.com.serragram.serragram.repository;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,5 +25,5 @@ public interface RelationshipRepository extends JpaRepository<Relationship, Long
 	void deleteByIdUserSeguidorIdAndIdUserSeguidoId(Long seguidorId, Long seguidoId);
 	
 	@Query(value = "select * from relationship WHERE id_user_seguido = 1", nativeQuery = true)
-	 Optional<Page<RelationshipDTO>> buscarSeguidores();
+	 Optional<Page<RelationshipDTO>> buscarSeguidores(Pageable pageable);
 }

@@ -1,11 +1,13 @@
 package br.com.serragram.serragram.controller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
@@ -46,9 +50,9 @@ public class UserController {
 		return ResponseEntity.ok(userDTO);
 	}
 
-	@PostMapping("/cadastro")
-	public ResponseEntity<UserDTO> inserir(@Valid @RequestBody UserInserirDTO userInserirDTO) {
-		UserDTO userDTO = userService.inserir(userInserirDTO);
+	@PostMapping(value = "/cadastro", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<UserDTO> inserir(@Valid @RequestPart UserInserirDTO userInserirDTO, @RequestPart MultipartFile file) throws UnprocessableEntityException, IOException {
+		UserDTO userDTO = userService.inserir(userInserirDTO, file);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")

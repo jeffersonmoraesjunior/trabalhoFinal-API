@@ -1,5 +1,7 @@
 package br.com.serragram.serragram.service;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,6 +11,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
@@ -31,6 +35,8 @@ public class UserService {
 	@Autowired
 	private MailConfig mailConfig;
 
+	@Autowired
+	private FotoService fotoService;
 	/*
 	 * @Autowired private RelationshipRepository relationshipRepository;
 	 */
@@ -38,7 +44,10 @@ public class UserService {
 	// GetAll
 	public List<UserDTO> findAll() {
 		List<User> users = userRepository.findAll();
-		List<UserDTO> usersDTO = users.stream().map(usuario -> new UserDTO(usuario)).collect(Collectors.toList());
+		List<UserDTO> usersDTO = users.stream().map(usuario -> {
+			return adicionaImagemURI(usuario);})
+				.collect(Collectors.toList());
+		
 		return usersDTO;
 	}
 
@@ -48,13 +57,12 @@ public class UserService {
 		if (userOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Usuário inexistente!!");
 		}
-		UserDTO userDTO = new UserDTO(userOpt.get());
-		return userDTO;
+		return adicionaImagemURI(userOpt.get());
 	}
 
 	// Post
 	@Transactional
-	public UserDTO inserir(UserInserirDTO userInserirDTO) throws UnprocessableEntityException {
+	public UserDTO inserir(UserInserirDTO userInserirDTO, MultipartFile file) throws UnprocessableEntityException, IOException {
 		if (!userInserirDTO.getSenha().equalsIgnoreCase(userInserirDTO.getConfirmaSenha())) {
 			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
@@ -63,18 +71,19 @@ public class UserService {
 		if (userEmailExistente != null) {
 			throw new UnprocessableEntityException("E-mail já cadastrado.");
 		}
-
+		
 		User user = new User();
 		user.setNome(userInserirDTO.getNome());
 		user.setSobreNome(userInserirDTO.getSobreNome());
-		user.setEmail(userInserirDTO.getEmail());
 		user.setDataNascimento(userInserirDTO.getDataNascimento());
+		user.setEmail(userInserirDTO.getEmail());
 		user.setSenha(bCryptPasswordEncoder.encode(userInserirDTO.getSenha()));
-
+		
 		user = userRepository.save(user);
+		fotoService.inserir(user, file);
+		
 		mailConfig.sendEmail(user.getEmail(), "Cadastro Realizado!", user.toString());
-		UserDTO userDTO = new UserDTO(user);
-		return userDTO;
+		return adicionaImagemURI(user);
 	}
 
 	// PutSenha
@@ -124,4 +133,18 @@ public class UserService {
 		}
 		userRepository.deleteById(id);
 	}
+	
+//	=====================================================
+	
+	public UserDTO adicionaImagemURI(User user) {
+        URI uri = ServletUriComponentsBuilder.
+                fromCurrentContextPath()
+                .path("/user/{id}/foto")
+                .buildAndExpand(user.getId())
+                .toUri();
+
+        UserDTO dto = new UserDTO(user);
+        dto.setUrl(uri.toString());
+        return dto;
+    }
 }
