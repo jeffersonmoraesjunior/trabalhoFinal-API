@@ -91,7 +91,7 @@ public class PostService {
 		}
 		Post post = postOpt.get();
 		post.setId(id);
-		System.out.println(post.getId());
+		post.setConteudo(postEditarDTO.getConteudo());
 		post.setDataCriacao(Calendar.getInstance());
 		postRepository.save(post);
 		PostDTO postDTO = new PostDTO(post);

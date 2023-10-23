@@ -98,6 +98,7 @@ public class CommentService {
 		}
 		Comment comment = commentOpt.get();
 		comment.setId(id);
+		comment.setTexto(commentEditarDTO.getTexto());
 		comment.setDataCriacao(Calendar.getInstance());
 		comment = commentRepository.save(comment);
 		CommentDTO commentDTO = new CommentDTO(comment);
