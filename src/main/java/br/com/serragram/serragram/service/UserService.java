@@ -80,6 +80,12 @@ public class UserService {
 		if (!userInserirDTO.getSenha().equalsIgnoreCase(userInserirDTO.getConfirmaSenha())) {
 			throw new UnprocessableEntityException("Senha e confirma senha devem ser idênticas.");
 		}
+		
+		User userNomeCompletoExistente = userRepository.findByNomeAndSobreNome(userInserirDTO.getNome(), userInserirDTO.getSobreNome());
+		
+		if(userNomeCompletoExistente != null) {
+			throw new UnprocessableEntityException("Nome e sobrenome já cadastrados");
+		}
 
 		User userEmailExistente = userRepository.findByEmail(userInserirDTO.getEmail());
 		if (userEmailExistente != null) {
@@ -126,18 +132,41 @@ public class UserService {
 		if (userOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Id não existente");
 		}
+		User user = userOpt.get();
+		
+		User userNomeCompletoExistente = userRepository.findByNomeAndSobreNome(userAtualizarDTO.getNome(), userAtualizarDTO.getSobreNome());			
+		
+		if(userAtualizarDTO.getNome() != null || userAtualizarDTO.getSobreNome() != null) {
+			
+			if(userAtualizarDTO.getNome() != null && userAtualizarDTO.getSobreNome() != null && userNomeCompletoExistente != null) {
+				throw new UnprocessableEntityException("Nome e sobrenome já cadastrados");
+			}
+
+			else if (userAtualizarDTO.getSobreNome() == null && userRepository.findByNomeAndSobreNome(userAtualizarDTO.getNome(), user.getSobreNome()) != null) {
+				throw new UnprocessableEntityException("Nome e sobrenome já cadastrados");
+			}
+			
+			else if (userAtualizarDTO.getNome() == null && userRepository.findByNomeAndSobreNome(user.getNome(), userAtualizarDTO.getSobreNome()) != null) {
+				throw new UnprocessableEntityException("Nome e sobrenome já cadastrados");
+			}
+			
+		}
 		User userEmailExistente = userRepository.findByEmail(userAtualizarDTO.getEmail());
 		if (userEmailExistente != null) {
 			throw new UnprocessableEntityException("E-mail já cadastrado.");
 		}
-		User user = userOpt.get();
 //		String senha = user.getSenha();
 //		if (userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
 //			throw new UnprocessableEntityException(
 //					"Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
 //		}
+		
+		
+		
 		user.setId(id);
 		Util.copyNonNullProperties(userAtualizarDTO, user);
+		
+		
 		// ele faz a copia dos atributos não nulos de user para userInserirDTO
 //		user.setSenha(senha);
 		userRepository.save(user);
