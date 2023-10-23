@@ -21,20 +21,20 @@ public class SwaggerConfig {
 				.select()
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())
-				.build();
-				//.apiInfo(apiInfo());
+				.build()
+				.apiInfo(apiInfo());
 	}
-//	private ApiInfo apiInfo() {
-//		ApiInfo apiInfo = new ApiInfoBuilder()
-//				.title("API do Serragram - Projeto Final")
-//				.description("Esse é uma API desenvolvida para o trabalho final da grade de API Rest")
-//				.license("Apache License Version 2.0")
-//				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0/%22%22")
-//				.version("1.0.0")
-//				.contact(new Contact("Serragram", "www.serragram.org.br", "socialserragram@gmail.com"))
-//				.build();
-//		return apiInfo;
-//	}
-//	
+	private ApiInfo apiInfo() {
+		ApiInfo apiInfo = new ApiInfoBuilder()
+				.title("API do Serragram - Projeto Final")
+				.description("Esse é uma API desenvolvida para o trabalho final da grade de API Rest")
+				.license("Apache License Version 2.0")
+				.licenseUrl("https://www.apache.org/licenses/LICENSE-2.0/%22%22")
+				.version("1.0.0")
+				.contact(new Contact("Serragram", "www.serragram.org.br", "socialserragram@gmail.com"))
+				.build();
+		return apiInfo;
+	}
+	
 
 }

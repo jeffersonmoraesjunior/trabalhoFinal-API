@@ -1,9 +1,10 @@
 package br.com.serragram.serragram.DTO;
 
 import java.util.Calendar;
+import java.util.List;
 
+import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
-import io.swagger.annotations.ApiModelProperty;
 
 public class PostDTO {
 	
@@ -19,6 +20,8 @@ public class PostDTO {
 	
 	private String sobrenomeAutor;
 	
+	private List<Comment> comentarios;
+	
 	public PostDTO() {}
 	
 	public PostDTO(Post post) {
@@ -28,6 +31,7 @@ public class PostDTO {
 		this.autorId = post.getAutor().getId();
 		this.nomeAutor = post.getAutor().getNome();
 		this.sobrenomeAutor = post.getAutor().getSobreNome();
+		this.comentarios = post.getComentarios();
 	}
 	
 	public Long getId() {
@@ -48,9 +52,6 @@ public class PostDTO {
 		return dataCriacao;
 	}
 	
-	public void setDataCricao(Calendar dataCricao) {
-		this.dataCriacao = dataCricao;
-	}
 
 	public Long getAutorId() {
 		return autorId;
@@ -74,6 +75,14 @@ public class PostDTO {
 
 	public void setSobrenomeAutor(String sobrenomeAutor) {
 		this.sobrenomeAutor = sobrenomeAutor;
+	}
+
+	public List<Comment> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comment> comentarios) {
+		this.comentarios = comentarios;
 	}
 
 	

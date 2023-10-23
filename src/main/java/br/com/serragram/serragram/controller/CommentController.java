@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.CommentDTO;
+import br.com.serragram.serragram.DTO.CommentEditarDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
+import br.com.serragram.serragram.DTO.UserAtualizarDTO;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.CommentService;
 import io.swagger.annotations.Api;
@@ -61,13 +63,12 @@ public class CommentController {
 
 	@PutMapping("/{id}")
 	@ApiOperation(value = "Atualiza comentário por id", notes = "Alterando comentário:")
-	public ResponseEntity<CommentDTO> atualizar(@Valid @RequestBody CommentInserirDTO commentInserirDTO, @PathVariable Long id) {
-		try {
-			CommentDTO updateComment = commentService.atualizar(commentInserirDTO, id);
-			return ResponseEntity.ok(updateComment);
-		} catch (UnprocessableEntityException e) {
-			throw new UnprocessableEntityException("Erro ao atualizar o user{id}");
+	public ResponseEntity<CommentDTO> atualizar(@Valid @RequestBody CommentEditarDTO commentEditarDTO, @PathVariable Long id) {
+		CommentDTO commentDTO = commentService.atualizar(commentEditarDTO, id);
+		if(commentDTO == null) {
+			return ResponseEntity.notFound().build();
 		}
+		return ResponseEntity.ok(commentDTO);
 	}
 	
 	@DeleteMapping( "/{id}")

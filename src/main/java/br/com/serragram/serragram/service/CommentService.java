@@ -11,14 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.CommentDTO;
+import br.com.serragram.serragram.DTO.CommentEditarDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
+import br.com.serragram.serragram.model.Relationship;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.CommentRepository;
 import br.com.serragram.serragram.repository.PostRepository;
+import br.com.serragram.serragram.repository.RelationshipRepository;
 import br.com.serragram.serragram.repository.UserRepository;
 import br.com.serragram.serragram.utils.Util;
 
@@ -36,6 +39,9 @@ public class CommentService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired 
+	private RelationshipRepository relationshipRepository;
 
 	public List<CommentDTO> findAll() {
 		List<Comment> comments = commentRepository.findAll();
@@ -70,6 +76,14 @@ public class CommentService {
 		comment.setAutorComentario(userOpt.get());
 		comment.setPost(postOpt.get());
 		
+		Long autorComentarioId = commentInserirDTO.getAutorId();
+		Long autorPostId = comment.getPost().getAutor().getId();
+		
+		Optional<Relationship> relationshipOpt = relationshipRepository.findByIdUserSeguidorIdAndIdUserSeguidoId(autorComentarioId, autorPostId);
+		if(relationshipOpt.isEmpty()) {
+			throw new UnprocessableEntityException("Comentário exclusivo para seguidores.");
+		}
+		
 		comment = commentRepository.save(comment);
 		CommentDTO commentDTO = new CommentDTO(comment);
 		String email = postOpt.get().getAutor().getEmail();
@@ -78,7 +92,7 @@ public class CommentService {
 		
 	}
 
-	public CommentDTO atualizar(CommentInserirDTO commentInserirDTO, Long id) throws UnprocessableEntityException  {
+	public CommentDTO atualizar(CommentEditarDTO commentEditarDTO, Long id) throws UnprocessableEntityException  {
 		Optional<Comment> commentOpt = commentRepository.findById(id);
 		if (commentOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Comentário não encontrado, verifique novamente.");
@@ -86,7 +100,6 @@ public class CommentService {
 		Comment comment = commentOpt.get();
 		comment.setId(id);
 		comment.setDataCriacao(Calendar.getInstance());
-		Util.copyNonNullProperties(commentInserirDTO, comment);
 		comment = commentRepository.save(comment);
 		CommentDTO commentDTO = new CommentDTO(comment);
 		return commentDTO;

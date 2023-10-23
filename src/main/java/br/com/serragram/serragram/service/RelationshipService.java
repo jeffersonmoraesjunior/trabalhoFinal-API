@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
+import br.com.serragram.serragram.DTO.UserDTO;
+import br.com.serragram.serragram.DTO.UserRelationshipDTO;
 import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.Relationship;
@@ -40,8 +42,8 @@ public class RelationshipService {
 		return relationshipDTO;
 	}
 	
-	public Page<Relationship> buscarSeguidores(Long id, Pageable pageable){
-		Page<Relationship> seguidores = relationshipRepository.findByIdUserSeguidoId(id, pageable);		
+	public Page<UserRelationshipDTO> buscarSeguidores(Long id, Pageable pageable){
+		Page<UserRelationshipDTO> seguidores = relationshipRepository.findUserDTOById(id, pageable);		
 		if (seguidores.isEmpty()) {
 			throw new UnprocessableEntityException("Este usuário não tem seguidores");
 		}

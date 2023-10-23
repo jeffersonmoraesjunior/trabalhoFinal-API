@@ -2,6 +2,7 @@ package br.com.serragram.serragram.DTO;
 
 import java.util.Date;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +21,7 @@ public class UserInserirDTO {
 	private Date dataNascimento;
 	
 	@NotBlank(message = "Preencha o Email")
+	@Email(message = "Preencha um Email Válido")
 	private String email;
 	
 	@NotBlank(message = "Preencha a Senha")

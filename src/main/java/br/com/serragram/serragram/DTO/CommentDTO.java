@@ -22,7 +22,7 @@ public class CommentDTO {
 	
 	private String sobrenomeAutorPost;
 	
-	private String conteudo;
+	private String conteudoPost;
 	
 	private Calendar dataCriacaoPost;
 	
@@ -38,7 +38,7 @@ public class CommentDTO {
 		this.postId = comment.getPost().getId();
 		this.nomeAutorPost = comment.getPost().getAutor().getNome();
 		this.sobrenomeAutorPost = comment.getPost().getAutor().getSobreNome();
-		this.conteudo = comment.getPost().getConteudo();
+		this.conteudoPost = comment.getPost().getConteudo();
 		this.dataCriacaoPost = comment.getPost().getDataCriacao();
 	}
 
@@ -108,12 +108,12 @@ public class CommentDTO {
 		this.sobrenomeAutorPost = sobrenomeAutorPost;
 	}
 
-	public String getConteudo() {
-		return conteudo;
+	public String getConteudoPost() {
+		return conteudoPost;
 	}
 
-	public void setConteudo(String conteudo) {
-		this.conteudo = conteudo;
+	public void setConteudoPost(String conteudo) {
+		this.conteudoPost = conteudo;
 	}
 
 	public Calendar getDataCriacaoPost() {

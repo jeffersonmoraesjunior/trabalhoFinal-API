@@ -1,13 +1,16 @@
 package br.com.serragram.serragram.DTO;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CommentInserirDTO {
 	@NotBlank(message = "Insira um texto")
 	private String texto;
-	@NotBlank(message = "Insira o id do Post")
+	
+	@NotNull(message = "Insira o id do Post")
 	private Long postId;
-	@NotBlank(message = "Insira o id do autor")
+
+	@NotNull(message = "Insira o id do autor")
 	private Long autorId;
 
 	public String getTexto() {

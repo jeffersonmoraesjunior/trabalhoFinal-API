@@ -12,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -48,7 +51,7 @@ public class User {
 	@ApiModelProperty(value = "Data de nascimento do usuário", required = true)
 	private Date dataNascimento;
 	
-	@Email(message = "Preencha o Email Válido")
+	
 	@Column(length = 60, nullable = false)
 	@ApiModelProperty(value = "E-mail do usuário", required = true)
 	private String email;	
@@ -57,11 +60,13 @@ public class User {
 	@ApiModelProperty(value = "Senha do usuário", required = true)
 	private String senha;
 
-
 	@OneToMany(mappedBy = "autor", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Post> posts;
 
+	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+	private Foto foto;
+	
 	/*@OneToMany(mappedBy = "id.userSeguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonManagedReference
 	private List<Relationship> seguidores;

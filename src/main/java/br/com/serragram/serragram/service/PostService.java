@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.PostDTO;
+import br.com.serragram.serragram.DTO.PostEditarDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
@@ -74,15 +75,15 @@ public class PostService {
 	}
 	
 	//Put
-	public PostDTO atualizar(PostInserirDTO postInserirDTO, Long id) throws UnprocessableEntityException {
+	public PostDTO atualizar(PostEditarDTO postEditarDTO, Long id) throws UnprocessableEntityException {
 		Optional<Post> postOpt = postRepository.findById(id);
 		if(postOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Post não encontrado, verifique novamente.");
 		}
 		Post post = postOpt.get();
 		post.setId(id);
+		System.out.println(post.getId());
 		post.setDataCriacao(Calendar.getInstance());
-		Util.copyNonNullProperties(postInserirDTO, post);
 		postRepository.save(post);
 		PostDTO postDTO = new PostDTO(post);
 		return postDTO;

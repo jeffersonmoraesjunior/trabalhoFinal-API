@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.serragram.serragram.DTO.UserAlterarSenhaDTO;
+import br.com.serragram.serragram.DTO.UserAtualizarDTO;
 import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserInserirDTO;
 import br.com.serragram.serragram.config.MailConfig;
@@ -120,23 +121,27 @@ public class UserService {
 
 	// Put
 	@Transactional
-	public UserDTO atualizar(UserInserirDTO userInserirDTO, Long id) throws UnprocessableEntityException {
+	public UserAtualizarDTO atualizar(UserAtualizarDTO userAtualizarDTO, Long id) throws UnprocessableEntityException {
 		Optional<User> userOpt = userRepository.findById(id);
 		if (userOpt.isEmpty()) {
 			throw new UnprocessableEntityException("Id não existente");
 		}
-		User user = userOpt.get();
-		String senha = user.getSenha();
-		if (userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
-			throw new UnprocessableEntityException(
-					"Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
+		User userEmailExistente = userRepository.findByEmail(userAtualizarDTO.getEmail());
+		if (userEmailExistente != null) {
+			throw new UnprocessableEntityException("E-mail já cadastrado.");
 		}
+		User user = userOpt.get();
+//		String senha = user.getSenha();
+//		if (userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
+//			throw new UnprocessableEntityException(
+//					"Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
+//		}
 		user.setId(id);
-		Util.copyNonNullProperties(userInserirDTO, user);
-		// ele faz a copia dos atributos não nulos de user para userDTO
-		user.setSenha(senha);
+		Util.copyNonNullProperties(userAtualizarDTO, user);
+		// ele faz a copia dos atributos não nulos de user para userInserirDTO
+//		user.setSenha(senha);
 		userRepository.save(user);
-		return new UserDTO(user);
+		return new UserAtualizarDTO(user);
 	}
 
 	// Delete
@@ -152,7 +157,7 @@ public class UserService {
 //	=====================================================
 
 	public UserDTO adicionaImagemURI(User user) {
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/{id}/foto")
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}/foto")
 				.buildAndExpand(user.getId()).toUri();
 
 		UserDTO dto = new UserDTO(user);

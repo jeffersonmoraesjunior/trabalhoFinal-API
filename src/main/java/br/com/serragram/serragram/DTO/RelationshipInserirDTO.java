@@ -6,6 +6,7 @@ public class RelationshipInserirDTO {
 	
 	@NotNull(message = "Insira o id do seguidor")
 	private Long seguidorId;
+	
 	@NotNull(message = "Insira o id do seguido")
 	private Long seguidoId;
 

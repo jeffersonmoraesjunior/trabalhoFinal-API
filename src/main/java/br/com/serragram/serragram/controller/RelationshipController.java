@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
+import br.com.serragram.serragram.DTO.UserDTO;
+import br.com.serragram.serragram.DTO.UserRelationshipDTO;
 import br.com.serragram.serragram.model.Relationship;
 import br.com.serragram.serragram.service.RelationshipService;
 import io.swagger.annotations.Api;
@@ -39,10 +41,10 @@ public class RelationshipController {
 		return ResponseEntity.ok(relationshipService.findAll());
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/followers/{id}")
 	@ApiOperation(value = "Retorna lista de relacionamento por id", notes = "Lista de relacionamento por id:")
-	public ResponseEntity<Page<Relationship>> findByIdUserSeguidoId(@PathVariable Long id, Pageable pageable){
-		Page<Relationship> seguidores = relationshipService.buscarSeguidores(id, pageable);		
+	public ResponseEntity<Page<UserRelationshipDTO>> findByIdUserSeguidoId(@PathVariable Long id, Pageable pageable){
+		Page<UserRelationshipDTO> seguidores = relationshipService.buscarSeguidores(id, pageable);		
 		return ResponseEntity.ok(seguidores);
 	}
 	
