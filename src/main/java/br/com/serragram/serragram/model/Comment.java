@@ -17,6 +17,8 @@ import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Comment {
 
@@ -25,22 +27,25 @@ public class Comment {
 	@Column(name = "id_comentario")
 	private Long id;
 
-	@NotBlank(message = "insira um texto:")
 	@Column
+	@ApiModelProperty(value = "Comentário do Post")
 	private String texto;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_criacao")
+	@ApiModelProperty(value = "Data de criação do Comentário")
 	private Calendar dataCriacao;
 
 	@ManyToOne
 	@JoinColumn(name = "post_id")
 	@JsonBackReference
+	@ApiModelProperty(value = "Id do Post")
 	private Post post;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonBackReference
+	@ApiModelProperty(value = "Id do autor do comentário")
 	private User autorComentario;
 
 	public Comment() {

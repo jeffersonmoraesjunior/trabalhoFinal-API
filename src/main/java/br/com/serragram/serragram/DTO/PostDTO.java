@@ -3,6 +3,7 @@ package br.com.serragram.serragram.DTO;
 import java.util.Calendar;
 
 import br.com.serragram.serragram.model.Post;
+import io.swagger.annotations.ApiModelProperty;
 
 public class PostDTO {
 	

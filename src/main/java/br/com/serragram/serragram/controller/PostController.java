@@ -22,8 +22,11 @@ import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
+@Api(value = "posts")
 @RequestMapping("/posts")
 public class PostController {
 	
@@ -31,12 +34,14 @@ public class PostController {
 	private PostService postService;
 	
 	@GetMapping
+	@ApiOperation(value = "Retorna lista de posts", notes = "Listando comentário:")
 	public ResponseEntity<List<PostDTO>> listar(){
 		//UserDetails detail = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.ok(postService.findAll());
 	}
 	
 	@GetMapping("/{id}")
+	@ApiOperation(value = "Retorna post por id", notes = "Busca de post por id:")
 	public ResponseEntity<PostDTO> buscar(@PathVariable Long id) {
 		PostDTO postDTO = postService.findById(id);
 		if(postDTO == null) {
@@ -46,6 +51,7 @@ public class PostController {
 	}
 	
 	@PostMapping
+	@ApiOperation(value = "Cria post", notes = "Adicionando post:")
 	public ResponseEntity<PostDTO> inserir( @Valid @RequestBody PostInserirDTO postInserirDTO) {
 		PostDTO postDTO = postService.inserir(postInserirDTO);
 		URI uri = ServletUriComponentsBuilder
@@ -57,6 +63,7 @@ public class PostController {
 	}
 	
 	@PutMapping("/{id}")
+	@ApiOperation(value = "Altera post", notes = "Alterando post:")
 	public ResponseEntity<PostDTO> atualizar(@Valid @RequestBody PostInserirDTO postInserirDTO, @PathVariable Long id) {
 		try {
 			PostDTO updatePost = postService.atualizar(postInserirDTO, id);
@@ -68,6 +75,7 @@ public class PostController {
 	}
 	
 	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Deleta post", notes = "Deletando Post:")
 	public ResponseEntity<Void> remover(@PathVariable Long id) {
 		postService.remover(id);
 		return ResponseEntity.noContent().build();

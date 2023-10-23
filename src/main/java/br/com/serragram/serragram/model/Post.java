@@ -20,26 +20,32 @@ import javax.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_post")
+	@ApiModelProperty(value = "Identificador unico do Post")
 	private Long id;
 
-	@NotBlank(message = "insira um conteudo:")
+
 	@Column
+	@ApiModelProperty(value = "Conteudo do Post", required = true)
 	private String conteudo;
 
 	@Column(name = "data_criacao")
 	@Temporal(TemporalType.TIMESTAMP)
-	//@JsonFormat(pattern = "dd/MM/yyyy")
+	@ApiModelProperty(value = "Data de criação do Post")
 	private Calendar dataCriacao;
+
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonBackReference
+	@ApiModelProperty(value = "Conteudo do Post")
 	private User autor;
 	
 	@OneToMany(mappedBy = "post")

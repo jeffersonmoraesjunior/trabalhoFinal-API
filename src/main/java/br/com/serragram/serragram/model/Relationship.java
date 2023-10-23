@@ -8,16 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 
 @Entity
 public class Relationship {
 
 	@EmbeddedId
+	@ApiModelProperty(value = "Chave Primária composta de relação de usuários")
 	private RelationshipPK id = new RelationshipPK();
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_inicio_seguimento")
+	@ApiModelProperty(value = "Data de início da relação seguidor/seguido")
 	private Date dataInicioSeguimento;
 	
 	

@@ -17,9 +17,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "usuario")
@@ -28,29 +31,30 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_user")
+	@ApiModelProperty(value = "Identificador unico do usuário")
 	private Long id;
 
-	@NotBlank(message = "Preencha o nome")
 	@Column(length = 60, nullable = false)
+	@ApiModelProperty(value = "Nome do usuário", required = true)
 	private String nome;
 
-	@NotBlank(message = "Preencha o Sobrenome")
 	@Column(name = "sobre_nome", length = 60, nullable = false)
+	@ApiModelProperty(value = "Sobrenome do usuário", required = true)
 	private String sobreNome;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento", nullable = false)
 	@JsonFormat(pattern = "dd/MM/yyyy")
+	@ApiModelProperty(value = "Data de nascimento do usuário", required = true)
 	private Date dataNascimento;
 	
-	@NotBlank(message = "Preencha o Email")
 	@Email(message = "Preencha o Email Válido")
 	@Column(length = 60, nullable = false)
+	@ApiModelProperty(value = "E-mail do usuário", required = true)
 	private String email;	
 	
-
-	@NotBlank(message = "Preencha a Senha")
 	@Column(length = 60, nullable = false)
+	@ApiModelProperty(value = "Senha do usuário", required = true)
 	private String senha;
 
 

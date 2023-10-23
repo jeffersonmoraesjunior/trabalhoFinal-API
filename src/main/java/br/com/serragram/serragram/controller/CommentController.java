@@ -21,8 +21,11 @@ import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.CommentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
+@Api(value = "comments")
 @RequestMapping("/comments")
 public class CommentController {
 
@@ -30,12 +33,14 @@ public class CommentController {
 	private CommentService commentService;
 
 	@GetMapping
+	@ApiOperation(value = "Retorna lista de comentário", notes = "Listando comentário:")
 	public ResponseEntity<List<CommentDTO>> listar() {
 		return ResponseEntity.ok(commentService.findAll());
 
 	}
 
 	@GetMapping("/{id}")
+	@ApiOperation(value = "Retorna comentário por id", notes = "Busca de comentário por id:")
 	public ResponseEntity<CommentDTO> buscar(@PathVariable Long id) {
 		CommentDTO commentDTO = commentService.findById(id);
 		if (commentDTO == null) {
@@ -46,6 +51,7 @@ public class CommentController {
 	}
 
 	@PostMapping
+	@ApiOperation(value = "Cria comentário", notes = "Adicionando comentário:")
 	public ResponseEntity<CommentDTO> inserir(@Valid @RequestBody CommentInserirDTO commentInserirDTO) {
 		CommentDTO commentDTO = commentService.inserir(commentInserirDTO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(commentDTO.getId())
@@ -54,6 +60,7 @@ public class CommentController {
 	}
 
 	@PutMapping("/{id}")
+	@ApiOperation(value = "Atualiza comentário por id", notes = "Alterando comentário:")
 	public ResponseEntity<CommentDTO> atualizar(@Valid @RequestBody CommentInserirDTO commentInserirDTO, @PathVariable Long id) {
 		try {
 			CommentDTO updateComment = commentService.atualizar(commentInserirDTO, id);
@@ -64,6 +71,7 @@ public class CommentController {
 	}
 	
 	@DeleteMapping( "/{id}")
+	@ApiOperation(value = "Deleta comentário por id", notes = "Deletando comentário:")
 	public  ResponseEntity<Void> remover( @PathVariable Long id){
 		commentService.remover(id);
 		return ResponseEntity.noContent().build();

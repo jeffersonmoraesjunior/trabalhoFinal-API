@@ -2,16 +2,30 @@ package br.com.serragram.serragram.DTO;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import br.com.serragram.serragram.model.User;
 
 
 public class UserInserirDTO {
-
+	
+	@NotBlank(message = "Preencha o nome")
 	private String nome;
+	
+	@NotBlank(message = "Preencha o Sobrenome")
 	private String sobreNome;
+	
+	@NotNull(message = "Preencha a data de nascimento")
 	private Date dataNascimento;
+	
+	@NotBlank(message = "Preencha o Email")
 	private String email;
+	
+	@NotBlank(message = "Preencha a Senha")
 	private String senha;
+
+	@NotBlank(message = "Preencha a Confirma senha")
 	private String confirmaSenha;
 	
 	private UserAlterarSenhaDTO userAlterarSenhaDTO;

@@ -1,9 +1,12 @@
 package br.com.serragram.serragram.DTO;
 
-public class RelationshipInserirDTO {
+import javax.validation.constraints.NotNull;
 
-	private Long seguidorId;
+public class RelationshipInserirDTO {
 	
+	@NotNull(message = "Insira o id do seguidor")
+	private Long seguidorId;
+	@NotNull(message = "Insira o id do seguido")
 	private Long seguidoId;
 
 	public Long getSeguidorId() {
