@@ -1,6 +1,5 @@
 package br.com.serragram.serragram.security;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,6 @@ public class JwtUtil {
 		SecretKey secretKeySpec = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 		return Jwts.builder()
 				.setSubject(username)
-				//.setExpiration(new Date(System.currentTimeMillis() + this.jwtExpirationMiliseg))
 				.signWith(secretKeySpec)
 				.addClaims(claims)
 				.compact();
@@ -36,9 +34,8 @@ public class JwtUtil {
 		Claims claims = getClaims(token);
 		if (claims != null) {
 			String username = claims.getSubject();
-			//Date expirationDate = claims.getExpiration();
-			//Date now = new Date(System.currentTimeMillis());
-			if (username != null ) {//&& expirationDate != null && now.before(expirationDate)) {
+			
+			if (username != null ) {
 				return true;
 			}
 		}

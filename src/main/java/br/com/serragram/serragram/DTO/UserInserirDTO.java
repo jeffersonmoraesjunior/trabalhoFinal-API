@@ -30,8 +30,6 @@ public class UserInserirDTO {
 	@NotBlank(message = "Preencha a Confirma senha")
 	private String confirmaSenha;
 	
-	private UserAlterarSenhaDTO userAlterarSenhaDTO;
-	
 	UserInserirDTO () {}
 	
 	public UserInserirDTO(User user, UserAlterarSenhaDTO userAlterarSenhaDTO) {

@@ -3,6 +3,7 @@ package br.com.serragram.serragram.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,11 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -66,18 +62,8 @@ public class User {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Foto foto;
-	
-	/*@OneToMany(mappedBy = "id.userSeguidor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonManagedReference
-	private List<Relationship> seguidores;
-	
-	@OneToMany(mappedBy = "id.userSeguido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JsonManagedReference
-	private List<Relationship> seguindo;*/
 
-	public User() {
-
-	}
+	public User() {}
 
 	public User(Long id, String nome, String sobreNome,  Date dataNascimento, String email, String senha) {
 		this.id = id;
@@ -143,14 +129,6 @@ public class User {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-	
-//	public List<Comment> getComments() {
-//		return comments;
-//	}
-//
-//	public void setComments(List<Comment> comments) {
-//		this.comments = comments;
-//	}
 
 	@Override
 	public String toString() {
@@ -160,24 +138,21 @@ public class User {
 				+ "\nEmail: " + email;
 	}
 
-	
-
-/*	public List<Relationship> getSeguidores() {
-		return seguidores;
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 
-	public void setSeguidores(List<Relationship> seguidores) {
-		this.seguidores = seguidores;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(id, other.id);
 	}
-
-	public List<Relationship> getSeguindo() {
-		return seguindo;
-	}
-
-	public void setSeguindo(List<Relationship> seguindo) {
-		this.seguindo = seguindo;
-	}*/
-
-	
 	
 }

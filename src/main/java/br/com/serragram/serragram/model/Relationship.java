@@ -1,6 +1,7 @@
 package br.com.serragram.serragram.model;
 
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -9,8 +10,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import io.swagger.annotations.ApiModelProperty;
-
-
 
 @Entity
 public class Relationship {
@@ -22,9 +21,7 @@ public class Relationship {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_inicio_seguimento")
 	@ApiModelProperty(value = "Data de início da relação seguidor/seguido")
-	private Date dataInicioSeguimento;
-	
-	
+	private Date dataInicioSeguimento;	
 
 	public RelationshipPK getId() {
 		return id;
@@ -42,7 +39,21 @@ public class Relationship {
 		this.dataInicioSeguimento = dataInicioSeguimento;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Relationship other = (Relationship) obj;
+		return Objects.equals(id, other.id);
+	}	
 	
-
 }

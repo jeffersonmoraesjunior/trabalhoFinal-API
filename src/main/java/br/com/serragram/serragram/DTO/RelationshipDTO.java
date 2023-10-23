@@ -63,8 +63,5 @@ public class RelationshipDTO {
 	public void setDataInicio(Date dataInicio) {
 		this.dataInicio = dataInicio;
 	}
-
-	
-	
 	
 }

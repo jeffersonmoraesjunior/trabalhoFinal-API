@@ -3,7 +3,6 @@ package br.com.serragram.serragram.DTO;
 import java.util.Date;
 import java.util.List;
 
-import br.com.serragram.serragram.model.Comment;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
 

@@ -1,7 +1,10 @@
 package br.com.serragram.serragram.DTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class CommentEditarDTO {
 
+	@NotBlank(message = "Insira um Texto")
 	private String texto;
 
 	public String getTexto() {

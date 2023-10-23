@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import br.com.serragram.serragram.model.User;
 
 public class UsersDetails implements UserDetails {
+	private static final long serialVersionUID = 1L;
 	
 	private User user;
 	
@@ -17,7 +18,6 @@ public class UsersDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

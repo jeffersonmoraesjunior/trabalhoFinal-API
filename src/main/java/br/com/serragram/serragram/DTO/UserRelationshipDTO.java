@@ -9,4 +9,5 @@ public interface UserRelationshipDTO {
 	public String getSobreNome();
 	public String getEmail();
 	public Date getDataNascimento();
+	public Date getDataInicioSeguimento();
 }

@@ -7,7 +7,6 @@ import javax.validation.constraints.Email;
 import br.com.serragram.serragram.model.User;
 
 public class UserAtualizarDTO {
-
 	
 	private String nome;
 	

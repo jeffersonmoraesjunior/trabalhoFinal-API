@@ -17,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostEditarDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
-import br.com.serragram.serragram.DTO.UserAtualizarDTO;
-import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
+import br.com.serragram.serragram.DTO.SomaPostDTO;
 import br.com.serragram.serragram.service.PostService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +47,14 @@ public class PostController {
 		if(postDTO == null) {
 			return ResponseEntity.notFound().build();
 		}
+		return ResponseEntity.ok(postDTO);
+	}
+	
+	//SOMA POST
+	@GetMapping("/soma/{id}")
+	@ApiOperation(value = "Retorna total de posts e comentários do usuario", notes = "Total de posts e comentários do usuario: ")
+	public ResponseEntity<SomaPostDTO> somaPost(@PathVariable Long id) {
+		SomaPostDTO postDTO = postService.somaPost(id);		
 		return ResponseEntity.ok(postDTO);
 	}
 	
@@ -82,10 +88,4 @@ public class PostController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	
-	
-	
-	
-	
-
 }

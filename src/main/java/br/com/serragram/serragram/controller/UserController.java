@@ -7,7 +7,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,11 +32,7 @@ import br.com.serragram.serragram.model.Foto;
 import br.com.serragram.serragram.service.FotoService;
 import br.com.serragram.serragram.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Parameter;
 
 
 @RestController
@@ -67,13 +62,6 @@ public class UserController {
 		return ResponseEntity.ok(userDTO);
 	}
 	
-//	@GetMapping
-//	public ResponseEntity<Page<UserDTO>> buscarDataNascimento(@RequestParam(value="dataMinima") @DateTimeFormat(pattern="MMddyyyy") Date dataMinima,@RequestParam(value="dataMaxima")  @DateTimeFormat(pattern="MMddyyyy") Date dataMaxima, Pageable pageable){
-//		System.out.println("PASSOU CONTROLLER");
-//		Page<UserDTO> pageUserDTO = userService.buscarDataNascimento(dataMinima, dataMaxima, pageable);
-//		return ResponseEntity.ok(pageUserDTO);
-//	}
-	
 	@GetMapping("/{id}/foto")
 	public ResponseEntity<byte[]> buscarFoto(@PathVariable Long id) {
 		Foto foto = fotoService.buscarFotoPorIdUser(id);
@@ -81,14 +69,9 @@ public class UserController {
 		headers.add(HttpHeaders.CONTENT_TYPE, foto.getTipo());
 		headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(foto.getDados().length));
 		return new ResponseEntity<>(foto.getDados(), headers, HttpStatus.OK);
-	}
-	
+	}	
 	
 	@ApiOperation(value = "Cria cadastro de usuário", notes = "Criando usuário:")
-//	@ApiImplicitParams({
-//	    @ApiImplicitParam(name = "userInserirDTO", dataType = "UserInserirDTO", paramType = "body")
-//	})
-//	@RequestMapping(value = "/cadastro", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	@PostMapping(value = "/cadastro", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<UserDTO> inserir(@Valid @RequestPart UserInserirDTO userInserirDTO, @RequestPart MultipartFile file) throws UnprocessableEntityException, IOException {
 		UserDTO userDTO = userService.inserir(userInserirDTO, file);
@@ -118,13 +101,6 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(userDTO);
-		
-		/*try {
-			UserDTO updateUser = userService.atualizar(userInserirDTO, id);
-			return ResponseEntity.ok(updateUser);
-		} catch (UnprocessableEntityException e) {
-			throw new UnprocessableEntityException("Erro ao atualizar o user{id}");
-		}*/
 	}
 	
 	@ApiOperation(value = "Deleta usuário por id", notes = "Deletando usuário por id")

@@ -23,7 +23,6 @@ import br.com.serragram.serragram.repository.CommentRepository;
 import br.com.serragram.serragram.repository.PostRepository;
 import br.com.serragram.serragram.repository.RelationshipRepository;
 import br.com.serragram.serragram.repository.UserRepository;
-import br.com.serragram.serragram.utils.Util;
 
 @Service
 public class CommentService {

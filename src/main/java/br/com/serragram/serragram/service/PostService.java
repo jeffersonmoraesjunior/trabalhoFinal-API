@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import br.com.serragram.serragram.DTO.PostDTO;
 import br.com.serragram.serragram.DTO.PostEditarDTO;
 import br.com.serragram.serragram.DTO.PostInserirDTO;
+import br.com.serragram.serragram.DTO.SomaPostDTO;
 import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.model.Post;
 import br.com.serragram.serragram.model.User;
 import br.com.serragram.serragram.repository.PostRepository;
 import br.com.serragram.serragram.repository.UserRepository;
-import br.com.serragram.serragram.utils.Util;
 
 @Service
 public class PostService {
@@ -47,6 +47,15 @@ public class PostService {
 		}
 		PostDTO postDTO = new PostDTO(postOpt.get());
 		return postDTO;
+	}
+	
+	//Get ID - SOMAPOST
+	public SomaPostDTO somaPost(Long id) throws UnprocessableEntityException {
+		SomaPostDTO postOpt = postRepository.somaPost(id);
+		if(postOpt == null) {
+			throw new UnprocessableEntityException("Usuario inexistente");
+		}
+		return postOpt;
 	}
 
 	//Post

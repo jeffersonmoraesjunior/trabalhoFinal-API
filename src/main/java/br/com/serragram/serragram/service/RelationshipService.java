@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
-import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserRelationshipDTO;
 import br.com.serragram.serragram.config.MailConfig;
 import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
@@ -86,16 +85,6 @@ public class RelationshipService {
 		}
 		
 		relationshipRepository.deleteByIdUserSeguidorIdAndIdUserSeguidoId(seguidorId, seguidoId);
-		/*EntityManager entityManager;// Obtenha o EntityManager de sua unidade de persistência
-		RelationshipPK chaveParaExcluir = new RelationshipPK(seguidorId, seguidoId); // Substitua id1 e id2 pelos valores reais
-
-		Relationship relacionamentoParaExcluir = entityManager.find(Relationship.class, chaveParaExcluir);
-
-				if (relacionamentoParaExcluir != null) {
-				    entityManager.getTransaction().begin();
-				    entityManager.remove(relacionamentoParaExcluir);
-				    entityManager.getTransaction().commit();
-				}*/
-
+		
 	}
 }

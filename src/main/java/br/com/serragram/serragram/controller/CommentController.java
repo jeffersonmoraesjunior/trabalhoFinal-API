@@ -20,8 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.com.serragram.serragram.DTO.CommentDTO;
 import br.com.serragram.serragram.DTO.CommentEditarDTO;
 import br.com.serragram.serragram.DTO.CommentInserirDTO;
-import br.com.serragram.serragram.DTO.UserAtualizarDTO;
-import br.com.serragram.serragram.exceptions.UnprocessableEntityException;
 import br.com.serragram.serragram.service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

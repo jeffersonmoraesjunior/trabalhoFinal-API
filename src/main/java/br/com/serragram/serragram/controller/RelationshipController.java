@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,9 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serragram.serragram.DTO.RelationshipDTO;
 import br.com.serragram.serragram.DTO.RelationshipInserirDTO;
-import br.com.serragram.serragram.DTO.UserDTO;
 import br.com.serragram.serragram.DTO.UserRelationshipDTO;
-import br.com.serragram.serragram.model.Relationship;
 import br.com.serragram.serragram.service.RelationshipService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +42,8 @@ public class RelationshipController {
 	
 	@GetMapping("/followers/{id}")
 	@ApiOperation(value = "Retorna lista de relacionamento por id", notes = "Lista de relacionamento por id:")
-	public ResponseEntity<Page<UserRelationshipDTO>> findByIdUserSeguidoId(@PathVariable Long id, Pageable pageable){
+	public ResponseEntity<Page<UserRelationshipDTO>> findByIdUserSeguidoId(@PathVariable Long id, 
+			@PageableDefault(size=1) Pageable pageable){
 		Page<UserRelationshipDTO> seguidores = relationshipService.buscarSeguidores(id, pageable);		
 		return ResponseEntity.ok(seguidores);
 	}

@@ -52,6 +52,5 @@ public class RelationshipPK implements Serializable{
 		RelationshipPK other = (RelationshipPK) obj;
 		return Objects.equals(userSeguido, other.userSeguido) && Objects.equals(userSeguidor, other.userSeguidor);
 	}
-
 	
 }

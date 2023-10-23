@@ -2,7 +2,6 @@ package br.com.serragram.serragram.service;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,8 +9,6 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,9 +38,6 @@ public class UserService {
 
 	@Autowired
 	private FotoService fotoService;
-	/*
-	 * @Autowired private RelationshipRepository relationshipRepository;
-	 */
 
 	// GetAll
 	public List<UserDTO> findAll() {
@@ -63,15 +57,6 @@ public class UserService {
 		}
 		return adicionaImagemURI(userOpt.get());
 	}
-
-//	// GetNativo
-//	public Page<UserDTO> buscarDataNascimento(Date dataMinima, Date dataMaxima, Pageable Pageable) {
-//		Page<UserDTO> buscarDataNativo = userRepository.buscarDataNativo(dataMinima, dataMaxima, Pageable);
-//		if(buscarDataNativo.isEmpty()) {
-//			throw new UnprocessableEntityException("Não existe usuario nessa faixa de Data");
-//		}		
-//		return buscarDataNativo;
-//	}
 
 	// Post
 	@Transactional
@@ -154,21 +139,12 @@ public class UserService {
 		User userEmailExistente = userRepository.findByEmail(userAtualizarDTO.getEmail());
 		if (userEmailExistente != null) {
 			throw new UnprocessableEntityException("E-mail já cadastrado.");
-		}
-//		String senha = user.getSenha();
-//		if (userInserirDTO.getSenha() != null && !userInserirDTO.getSenha().equals(senha)) {
-//			throw new UnprocessableEntityException(
-//					"Não é possível atualizar senha neste endpoint.\nFavor utiizar o endpoint /users/senha/id");
-//		}
-		
-		
+		}	
 		
 		user.setId(id);
-		Util.copyNonNullProperties(userAtualizarDTO, user);
-		
-		
 		// ele faz a copia dos atributos não nulos de user para userInserirDTO
-//		user.setSenha(senha);
+		Util.copyNonNullProperties(userAtualizarDTO, user);		
+		
 		userRepository.save(user);
 		return new UserAtualizarDTO(user);
 	}
@@ -182,8 +158,6 @@ public class UserService {
 		}
 		userRepository.deleteById(id);
 	}
-
-//	=====================================================
 
 	public UserDTO adicionaImagemURI(User user) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{id}/foto")

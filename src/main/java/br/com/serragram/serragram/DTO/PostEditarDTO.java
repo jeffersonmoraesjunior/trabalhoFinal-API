@@ -1,7 +1,10 @@
 package br.com.serragram.serragram.DTO;
 
+import javax.validation.constraints.NotBlank;
+
 public class PostEditarDTO {
 
+	@NotBlank(message = "Insira um conteúdo")
 	private String conteudo;
 	
 
